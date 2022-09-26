@@ -12,7 +12,10 @@ class MainCubit extends Cubit<OrdersState> {
   getOrders(){
     emit(state.copyWith(status: OrdersStatus.loading));
     _userRepository.getOrders().then((orders) {
-      emit(state.copyWith(status: OrdersStatus.complete, ordersCount: orders.payload?.length));
+      emit(state.copyWith(
+          status: OrdersStatus.complete,
+          ordersCount: orders.payload?.length
+      ));
     }).catchError((Object obj) {
       switch (obj.runtimeType) {
         case DioError:

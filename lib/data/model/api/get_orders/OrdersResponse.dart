@@ -14,7 +14,7 @@ class OrdersResponse {
       });
     }
   }
-  int? code;
+  num? code;
   List<Order>? payload;
 
   Map<String, dynamic> toJson() {
