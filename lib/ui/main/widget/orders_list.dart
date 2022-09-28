@@ -18,6 +18,13 @@ class _OrdersListWidgetState extends State<OrdersListWidget> {
     BlocProvider.of<MainCubit>(context).getOrders();
     super.initState();
   }
+
+  String getImageUrl(OrdersState state, int index) {
+    var url = 'https://d15oaqjca840o0.cloudfront.net/orders/${state.loadedOrder![index].user!.sId!}/${state.loadedOrder![index].id!}/thumb/${state.loadedOrder![index].images![0].userImage!}';
+    print(url);
+    return url;
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<MainCubit, OrdersState>(
@@ -27,13 +34,60 @@ class _OrdersListWidgetState extends State<OrdersListWidget> {
           } else {
             return Column(
               crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
+              // mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Center(
-                    child: Text(state.ordersCount.toString(),
-                        style: const TextStyle(fontSize: 48))),
-                ElevatedButton(onPressed: () =>
-                    BlocProvider.of<MainCubit>(context).getOrders(), child: const Icon(Icons.settings_backup_restore))
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.all(5.0),
+                    child: Container(
+                    decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: Colors.black12,
+                    ),
+                      child: ListView.separated(
+                        separatorBuilder: (context, index) => const SizedBox(
+                          height: 10,
+                        ),
+                          scrollDirection: Axis.vertical,
+                          shrinkWrap: true,
+                            padding: const EdgeInsets.all(8),
+                            itemCount: state.ordersCount,
+                            itemBuilder: (BuildContext context, int index) {
+
+                              return Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  color: Colors.black26,
+                                ),
+                                child: ListTile(
+                                  trailing: Image.network(getImageUrl(state, index)),
+                                  leading: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(state.loadedOrder?[index].name.toString() ?? ''),
+                                    ],
+                                  ),
+                                ),
+                              );
+                            }
+                        ),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(0, 0, 0, 12),
+                  child: ElevatedButton(
+                    style: ButtonStyle(
+                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(52.0),
+                            //side: const BorderSide(color: Colors.red)
+                        ),
+                      ),
+                    ),
+                      onPressed: () =>
+                      BlocProvider.of<MainCubit>(context).getOrders(), child: const Icon(Icons.settings_backup_restore, size: 60)),
+                ),
               ],
             );
           }

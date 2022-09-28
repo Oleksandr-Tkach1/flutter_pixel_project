@@ -18,19 +18,23 @@ void main() {
 }
 
 class MainApp extends StatefulWidget {
-  static BuildContext? _context;
-
   const MainApp({Key? key}) : super(key: key);
+  @override
+  MainAppState createState() => MainAppState();
+}
+
+class MainAppState extends State<MainApp> {
+  static BuildContext? _context;
 
   static BuildContext getContext() {
     return _context!;
   }
 
   @override
-  State<MainApp> createState() => _MainAppState();
-}
+  void initState() {
+    _context = context;
+  }
 
-class _MainAppState extends State<MainApp> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<AuthenticationBloc, AuthenticationState>(
@@ -38,7 +42,7 @@ class _MainAppState extends State<MainApp> {
         return MaterialApp(
           title: 'Flutter Demo',
           theme: ThemeData(
-            primarySwatch: Colors.blue,
+            primarySwatch: Colors.grey,
           ),
           home: navigateToHomeWidget(state),
         );

@@ -3,7 +3,8 @@ import 'Order.dart';
 class OrdersResponse {
   OrdersResponse({
       this.code, 
-      this.payload,});
+      this.payload,
+  });
 
   OrdersResponse.fromJson(dynamic json) {
     code = json['code'];
@@ -14,7 +15,7 @@ class OrdersResponse {
       });
     }
   }
-  num? code;
+  int? code;
   List<Order>? payload;
 
   Map<String, dynamic> toJson() {

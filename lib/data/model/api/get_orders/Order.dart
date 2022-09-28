@@ -4,9 +4,11 @@ class Order {
   List<Images>? images;
   String? name;
   String? status;
+  String? template;
   int? orderId;
   String? createdAt;
   String? updatedAt;
+  User? user;
 
   Order(
       {this.id,
@@ -14,9 +16,11 @@ class Order {
         this.images,
         this.name,
         this.status,
+        this.template,
         this.orderId,
         this.createdAt,
         this.updatedAt,
+        this.user,
       });
 
   Order.fromJson(Map<String, dynamic> json) {
@@ -24,9 +28,17 @@ class Order {
     photoType = json['photoType'];
     name = json['name'];
     status = json['status'];
+    template = json['template'];
     orderId = json['orderId'];
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
+    user = json['user'] != null ? User.fromJson(json['user']) : null;
+    if (json['images'] != null) {
+      images = <Images>[];
+      json['images'].forEach((v) {
+        images!.add(Images.fromJson(v));
+      });
+    }
   }
 
   Map<String, dynamic> toJson() {
@@ -36,9 +48,29 @@ class Order {
       data['images'] = images!.map((v) => v.toJson()).toList();
     }
     data['name'] = name;
+    data['template'] = template;
     data['orderId'] = orderId;
     data['createdAt'] = createdAt;
     data['updatedAt'] = updatedAt;
+    return data;
+  }
+}
+
+class User {
+  String? sId;
+  String? name;
+
+  User({this.sId, this.name});
+
+  User.fromJson(Map<String, dynamic> json) {
+    sId = json['_id'];
+    name = json['name'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['_id'] = this.sId;
+    data['name'] = this.name;
     return data;
   }
 }

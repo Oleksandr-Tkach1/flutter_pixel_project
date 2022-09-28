@@ -22,13 +22,13 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
       }
     });
     on<LoggedOut>((event, emit) async{
-      clearAppData(MainApp.getContext());
+      clearAppData(MainAppState.getContext());
       emit(state.copyWith(
           status: AuthenticationStatus.unauthenticated,
           deepLinkConfirmCode: '',
           deepLinkEmail: '',
           token: '',
-          )
+          ),
       );
     });
     on<LoggedIn>((event, emit) async{
@@ -44,9 +44,9 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
     BlocProvider.of<AuthorizationCubit>(context).clearState();
     // clear other states here if needed
   }
-}
 
-void logout(BuildContext context) {
-  Navigator.of(context).popUntil((route) => route.isFirst);
-  BlocProvider.of<AuthenticationBloc>(context).add(LoggedOut());
+  void logout(BuildContext context) {
+    Navigator.of(context).popUntil((route) => route.isFirst);
+    BlocProvider.of<AuthenticationBloc>(context).add(LoggedOut());
+  }
 }
