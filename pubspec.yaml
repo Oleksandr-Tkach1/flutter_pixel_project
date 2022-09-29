@@ -53,6 +53,9 @@ dependencies:
   # logger
   logger: ^1.1.0
 
+  # svg
+  flutter_svg: ^1.1.5
+
   flutter_secure_storage: ^6.0.0
 
   # The following adds the Cupertino Icons font to your application.

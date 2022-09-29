@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_pixel_project/ui/main/cubit/main_cubit.dart';
 import 'package:flutter_pixel_project/ui/main/cubit/main_state.dart';
+import 'package:flutter_pixel_project/utils/Colors.dart';
 
 class OrdersListWidget extends StatefulWidget {
   const OrdersListWidget({super.key});
@@ -28,87 +29,66 @@ class _OrdersListWidgetState extends State<OrdersListWidget> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<MainCubit, OrdersState>(
-        builder: (context, state) {
-          if (state.status == OrdersStatus.loading) {
-            return const Center(child: CircularProgressIndicator());
-          } else {
-            return Column(
+      builder: (context, state) {
+        if (state.status == OrdersStatus.loading) {
+          return const Center(child: CircularProgressIndicator());
+        } else {
+          return RefreshIndicator(
+            onRefresh: () => BlocProvider.of<MainCubit>(context).getOrders(),
+            child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               // mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Expanded(
                   child: Padding(
                     padding: const EdgeInsets.all(5.0),
-                    child: Container(
-                    decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: Colors.black12,
-                    ),
-                      child: ListView.separated(
+                    child: ListView.separated(
                         separatorBuilder: (context, index) => const SizedBox(
                           height: 10,
                         ),
-                          scrollDirection: Axis.vertical,
-                          shrinkWrap: true,
-                            padding: const EdgeInsets.all(8),
-                            itemCount: state.ordersCount,
-                            itemBuilder: (BuildContext context, int index) {
-
-                              return Container(
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  color: Colors.black26,
+                        scrollDirection: Axis.vertical,
+                        shrinkWrap: true,
+                        padding: const EdgeInsets.all(8),
+                        itemCount: state.ordersCount,
+                        itemBuilder: (BuildContext context, int index) {
+                          return Container(
+                            height: 100,
+                            decoration: BoxDecoration(
+                              boxShadow: [
+                                BoxShadow(
+                                  color: CustomColors.primaryBlack.shade300,
+                                  spreadRadius: 3,
+                                  blurRadius: 7,
+                                  offset: Offset(0, 3),
                                 ),
+                              ],
+                              borderRadius: BorderRadius.circular(5),
+                              color: CustomColors.primaryBlack.shade300,
+                            ),
+                            child: Card(
+                              color: CustomColors.primaryBlack.shade100,
+                              child: Center(
                                 child: ListTile(
-                                  trailing: Image.network(getImageUrl(state, index)),
+                                  trailing: Image.network(getImageUrl(state, index), width: 100, height: 100,fit: BoxFit.cover),
                                   leading: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
-                                      Text(state.loadedOrder?[index].name.toString() ?? ''),
+                                      Text(state.loadedOrder?[index].orderId.toString() ?? '', style: const TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight. bold)),
                                     ],
                                   ),
                                 ),
-                              );
-                            }
-                        ),
+                              ),
+                            ),
+                          );
+                        }
                     ),
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 0, 0, 12),
-                  child: ElevatedButton(
-                    style: ButtonStyle(
-                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                        RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(52.0),
-                            //side: const BorderSide(color: Colors.red)
-                        ),
-                      ),
-                    ),
-                      onPressed: () =>
-                      BlocProvider.of<MainCubit>(context).getOrders(), child: const Icon(Icons.settings_backup_restore, size: 60)),
-                ),
               ],
-            );
-          }
-        },
+            ),
+          );
+        }
+      },
     );
-
-    // return ListView.builder(
-    //     padding: const EdgeInsets.all(8),
-    //     itemCount: orders.length,
-    //     itemBuilder: (BuildContext context, int index) {
-    //       return Container(
-    //         height: 100,
-    //         color: Colors.amber[colorCodes[index]],
-    //         child: Column(
-    //           children: [
-    //             Center(child: Text('Entry ${orders[index]}')),
-    //             const SizedBox(height: 80,),
-    //           ],
-    //         ),
-    //       );
-    //     }
-    // );
   }
 }
