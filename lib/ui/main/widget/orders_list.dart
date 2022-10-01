@@ -16,7 +16,9 @@ class _OrdersListWidgetState extends State<OrdersListWidget> {
 
   @override
   void initState() {
-    BlocProvider.of<MainCubit>(context).getOrders();
+    // достаем последнний сохраненный статус и передаем в метод getOrders
+    var currentStatus = BlocProvider.of<MainCubit>(context).currentStatus;
+    BlocProvider.of<MainCubit>(context).getOrders(currentStatus);
     super.initState();
   }
 
@@ -32,16 +34,20 @@ class _OrdersListWidgetState extends State<OrdersListWidget> {
       builder: (context, state) {
         if (state.status == OrdersStatus.loading) {
           return const Center(child: CircularProgressIndicator());
+        } else if(state.status == OrdersStatus.listIsEmpty){
+          return Center(child: Image.asset('assets/photo_2022-09-30_19-35-56.png'));
         } else {
           return RefreshIndicator(
-            onRefresh: () => BlocProvider.of<MainCubit>(context).getOrders(),
+            onRefresh: () async {
+              var currentStatus = BlocProvider.of<MainCubit>(context).currentStatus;
+              BlocProvider.of<MainCubit>(context).getOrders(currentStatus);
+            },
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
-              // mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Expanded(
                   child: Padding(
-                    padding: const EdgeInsets.all(5.0),
+                    padding: const EdgeInsets.all(4.0),
                     child: ListView.separated(
                         separatorBuilder: (context, index) => const SizedBox(
                           height: 10,

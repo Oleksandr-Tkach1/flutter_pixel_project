@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_pixel_project/ui/page/authorization/widget/authorization.dart';
+import 'package:flutter_pixel_project/utils/Colors.dart';
 
 class AuthorizationPage extends StatelessWidget {
   const AuthorizationPage({super.key});
@@ -7,7 +8,7 @@ class AuthorizationPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: AppColors.backgroundColorLogin,
       body: AuthorizationWidget(),
     );
   }

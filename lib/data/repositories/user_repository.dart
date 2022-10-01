@@ -30,7 +30,7 @@ class UserRepository extends UserDataSource {
   }
 
   @override
-  Future<OrdersResponse> getOrders() {
-    return client.getOrders("CORRECTION_NEEDED");
+  Future<OrdersResponse> getOrders(String status) {
+    return client.getOrders(status);
   }
 }

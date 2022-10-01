@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_pixel_project/ui/page/authorization/cubit/authorization_cubit.dart';
 import 'package:flutter_pixel_project/ui/page/authorization/cubit/authorization_state.dart';
+import 'package:flutter_pixel_project/utils/Colors.dart';
+import 'package:flutter_pixel_project/utils/form_validation.dart';
+import 'package:flutter_svg/svg.dart';
 
 class AuthorizationFormWidget extends StatefulWidget {
   final AuthorizationState state;
@@ -42,56 +45,90 @@ class _AuthorizationFormWidgetState extends State<AuthorizationFormWidget> {
             key: _formKey,
             child: Column(
               children: [
-                const Padding(
-                  padding: EdgeInsets.only(
+                 Padding(
+                  padding: const EdgeInsets.only(
                       top: 8.0,
                       left: 16.0,
                       right: 16.0,
                       bottom: 20.0),
-                  child: Text('Authorization Page'),
+                  child: SvgPicture.asset('assets/gad_logo.svg', width: 150),
                 ),
+                const SizedBox(height: 20,),
                 TextFormField(
+                  style: TextStyle(color: CustomColors.primaryBlack.shade200),
                   controller: _emailTextController,
-                  decoration: const InputDecoration(
-                      labelText: 'Email',
-                      icon: Icon(Icons.email),
+                  validator: (value) => FormValidation.email(value!),
+                  //autovalidateMode: AutovalidateMode.onUserInteraction,
+                  textInputAction: TextInputAction.done,
+                  decoration: InputDecoration(
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: const BorderRadius.all(
+                            Radius.circular(20)
+                        ),
+                        borderSide: BorderSide(color: CustomColors.primaryBlack.shade200, width: 2),
+                      ),
+                      border: OutlineInputBorder(borderRadius: const BorderRadius.all(Radius.circular(20)), borderSide: BorderSide(color: CustomColors.primaryBlack.shade200)),
+                    focusedBorder: OutlineInputBorder(
+                        borderRadius: const BorderRadius.all(
+                            Radius.circular(20)
+                        ),
+                        borderSide: BorderSide(
+                            color: CustomColors.primaryBlack.shade200,
+                            width: 2
+                        ),
+                    ),
+                      labelText:'Email',
+                      labelStyle: TextStyle(
+                          color: CustomColors.primaryBlack.shade200),
+                      prefixIcon: Icon(Icons.email, color: CustomColors.primaryBlack.shade200),
                       enabled: true),
-                  autocorrect: false,
-                  autovalidateMode: AutovalidateMode.always,
                 ),
                 const SizedBox(
                   height: 16.0,
                 ),
                 TextFormField(
+                  style: TextStyle(color: CustomColors.primaryBlack.shade200),
                   controller: _confirmCodeTextController,
-                  decoration: const InputDecoration(
+                  validator: (value) => FormValidation.password(value!),
+                  decoration: InputDecoration(
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: const BorderRadius.all(
+                            Radius.circular(20)
+                        ),
+                        borderSide: BorderSide(color: CustomColors.primaryBlack.shade200, width: 2),
+                      ),
+                      border: const OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(20))),
                       labelText: 'Password',
-                      icon: Icon(Icons.lock),
+                      labelStyle: TextStyle(
+                          color: CustomColors.primaryBlack.shade200),
+                      prefixIcon: Icon(Icons.lock, color: CustomColors.primaryBlack.shade200),
                       enabled: true),
                   autocorrect: false,
-                  autovalidateMode: AutovalidateMode.always,
+                  //autovalidateMode: AutovalidateMode.always,
+                  textInputAction: TextInputAction.done,
                 ),
               ],
             ),
           ),
           Padding(
             padding: const EdgeInsets.only(
-                left: 8.0, right: 8.0, top: 32.0, bottom: 8.0),
-            child: Padding(
-              padding: const EdgeInsets.only(left: 42.0, right: 42.0),
-              child: ElevatedButton(
-                onPressed: () {
+                left: 3.0, right: 3.0, top: 52.0, bottom: 8.0),
+            child: ElevatedButton(
+              onPressed: () {
+                if(_formKey.currentState!.validate()) {
                   BlocProvider.of<AuthorizationCubit>(context).authenticate(
                       _emailTextController.value.text,
                       _confirmCodeTextController.value.text);
-                },
-                style: ElevatedButton.styleFrom(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30.0),
-                  ),
+                }
+              },
+              style: ElevatedButton.styleFrom(
+                minimumSize: Size(500, 56),
+                backgroundColor: AppColors.buttonColor,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20.0),
                 ),
-                child: const Text('Login'),
               ),
+              child: const Text('Login', style: TextStyle(color: Colors.white, fontSize: 18)),
             ),
           )
         ],

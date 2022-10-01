@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_pixel_project/bloc/auth/auth_bloc.dart';
 import 'package:flutter_pixel_project/bloc/auth/auth_event.dart';
+import 'package:flutter_pixel_project/utils/Colors.dart';
+import 'package:flutter_svg/svg.dart';
 
 class SplashWidget extends StatefulWidget {
   const SplashWidget({super.key});
@@ -19,7 +21,7 @@ class _SplashWidgetState extends State<SplashWidget> {
   }
 
   startNavigateWithDelay() async {
-    var duration = const Duration(seconds: 2);
+    var duration = const Duration(seconds: 3);
     return Timer(duration, () {
       BlocProvider.of<AuthenticationBloc>(context).add(AppLoaded());
     });
@@ -28,16 +30,16 @@ class _SplashWidgetState extends State<SplashWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Container(
-      color: Colors.white,
+      body: Container(
+      color: AppColors.backgroundColorLogin,
       child: Column(
         children: [
           Expanded(
-            flex: 3,
+            flex: 5,
             child: Stack(
-              children: const [
+              children: [
                 Center(
-                  child: Text('SPLASH SCREEN!'),
+                  child: SvgPicture.asset('assets/gad_logo.svg', width: 180),
                 ),
               ],
             ),
