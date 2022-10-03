@@ -21,9 +21,15 @@ class _RestClient implements RestClient {
   String? baseUrl;
 
   @override
-  Future<OrdersResponse> getOrders(status) async {
+  Future<OrdersResponse> getOrders(
+    limit,
+    status,
+  ) async {
     const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{r'statuses[0]': status};
+    final queryParameters = <String, dynamic>{
+      r'limit': limit,
+      r'statuses[0]': status,
+    };
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio
@@ -34,7 +40,7 @@ class _RestClient implements RestClient {
     )
             .compose(
               _dio.options,
-              '/v2/orders/list?page=1&limit=10&sort[submitTime]=1',
+              '/v2/orders/list?page=1sort[submitTime]=1',
               queryParameters: queryParameters,
               data: _data,
             )

@@ -65,7 +65,7 @@ class _OrdersListWidgetState extends State<OrdersListWidget> {
                                   color: CustomColors.primaryBlack.shade300,
                                   spreadRadius: 3,
                                   blurRadius: 7,
-                                  offset: Offset(0, 3),
+                                  offset: const Offset(0, 3),
                                 ),
                               ],
                               borderRadius: BorderRadius.circular(5),

@@ -42,7 +42,6 @@ class _MainPageState extends State<MainPage> {
       timerRefreshOrder();
     });
 
-    String _selectedMenu = '';
     return Scaffold(
       backgroundColor: CustomColors.primaryBlack.shade50,
       appBar: AppBar(
@@ -53,11 +52,6 @@ class _MainPageState extends State<MainPage> {
         title: SvgPicture.asset('assets/gad_logo.svg', width: 110),
         actions: <Widget>[
           PopupMenuButton<Menu>(
-            onSelected: (Menu item) {
-              setState(() {
-                _selectedMenu = item.name;
-              });
-            },
             itemBuilder: (BuildContext context) => <PopupMenuEntry<Menu>>[
               PopupMenuItem<Menu>(
                 onTap: () {
@@ -81,7 +75,7 @@ class _MainPageState extends State<MainPage> {
                 onTap: () {
                   var status = "REJECTED";
                   BlocProvider.of<MainCubit>(context).setCurrentStatus(status);
-                  BlocProvider.of<MainCubit>(context).getOrders("status");
+                  BlocProvider.of<MainCubit>(context).getOrders(status);
                 },
                 value: Menu.REJECT,
                 child: const Text('REJECT'),

@@ -29,8 +29,11 @@ abstract class RestClient {
     return _RestClient(dio, baseUrl: baseUrl);
   }
 
-  @GET("/v2/orders/list?page=1&limit=10&sort[submitTime]=1")
-  Future<OrdersResponse> getOrders(@Query("statuses[0]") String status);
+  @GET("/v2/orders/list?page=1sort[submitTime]=1")
+  Future<OrdersResponse> getOrders(
+      @Query("limit") int limit,
+      @Query("statuses[0]") String status,
+      );
 
   @POST("/v2/auth/login")
   Future<TokenResponse> authenticate(@Body() AuthRequest authRequest);

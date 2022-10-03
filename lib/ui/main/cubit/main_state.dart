@@ -2,35 +2,40 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_pixel_project/data/model/api/get_orders/Order.dart';
 
 enum OrdersStatus { initial, error, complete, loading, listIsEmpty }
+enum CurrentListStatus {initial, success, failure}
 
 class OrdersState extends Equatable {
   final int ordersCount;
   final OrdersStatus status;
-  final List<Order>? loadedOrder;
-  final String currentStatus;
+  final List<Order> loadedOrder;
+  final CurrentListStatus currentStatus;
+  final bool hasReachedMax;
 
   const OrdersState({
-    this.loadedOrder,
+    this.loadedOrder = const <Order> [],
     this.ordersCount = 0,
     this.status = OrdersStatus.initial,
-    this.currentStatus = '',
+    this.currentStatus = CurrentListStatus.initial,
+    this.hasReachedMax = false,
   });
 
   OrdersState copyWith({
   List<Order>? loadedOrder,
   int? ordersCount,
   OrdersStatus? status,
-  String? currentStatus,
+  CurrentListStatus? currentStatus,
+  bool? hasReachedMax,
   }) {
     return OrdersState(
       loadedOrder: loadedOrder ?? this.loadedOrder,
       status: status ?? this.status,
       ordersCount: ordersCount ?? this.ordersCount,
       currentStatus: currentStatus ?? this.currentStatus,
+      hasReachedMax: hasReachedMax ?? this.hasReachedMax,
     );
   }
 
   @override
   List<Object> get props =>
-      [ordersCount, status];
+      [ordersCount, status, currentStatus];
 }
