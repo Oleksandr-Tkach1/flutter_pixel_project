@@ -1,3 +1,5 @@
+import 'package:flutter_pixel_project/data/model/api/response/QaDetails.dart';
+
 class Order {
   String? id;
   String? photoType;
@@ -9,6 +11,7 @@ class Order {
   String? createdAt;
   String? updatedAt;
   User? user;
+  QaDetails? qaDetails;
 
   Order(
       {this.id,
@@ -21,6 +24,7 @@ class Order {
         this.createdAt,
         this.updatedAt,
         this.user,
+        this.qaDetails,
       });
 
   Order.fromJson(Map<String, dynamic> json) {
@@ -39,6 +43,9 @@ class Order {
         images!.add(Images.fromJson(v));
       });
     }
+    qaDetails = json['qaDetails'] != null
+        ? QaDetails.fromJson(json['qaDetails'])
+        : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -52,6 +59,9 @@ class Order {
     data['orderId'] = orderId;
     data['createdAt'] = createdAt;
     data['updatedAt'] = updatedAt;
+    if (qaDetails != null) {
+      data['qaDetails'] = qaDetails!.toJson();
+    }
     return data;
   }
 }

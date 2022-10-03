@@ -75,6 +75,7 @@ class MainCubit extends Cubit<OrdersState> {
         status: OrdersStatus.complete,
         ordersCount: orders.payload?.length,
         loadedOrder: orders.payload,
+        //orderValidationStatus: orders.payload,
       ));
       if (orders.payload?.length == null || orders.payload!.isEmpty) {
         emit(state.copyWith(status: OrdersStatus.listIsEmpty));

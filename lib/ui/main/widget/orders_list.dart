@@ -78,8 +78,17 @@ class _OrdersListWidgetState extends State<OrdersListWidget> {
                                   trailing: Image.network(getImageUrl(state, index), width: 100, height: 100,fit: BoxFit.cover),
                                   leading: Column(
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       Text(state.loadedOrder?[index].orderId.toString() ?? '', style: const TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight. bold)),
+                                      Container(
+                                        width: 12,
+                                        height: 12,
+                                          decoration: BoxDecoration(
+                                            color: state.loadedOrder[index].qaDetails!.startTime != null ? Colors.red : Colors.green,
+                                            shape: BoxShape.circle,
+                                        ),
+                                      ),
                                     ],
                                   ),
                                 ),

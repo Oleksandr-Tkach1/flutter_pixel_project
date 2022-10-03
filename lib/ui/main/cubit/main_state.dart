@@ -10,6 +10,7 @@ class OrdersState extends Equatable {
   final List<Order> loadedOrder;
   final CurrentListStatus currentStatus;
   final bool hasReachedMax;
+  final String orderValidationStatus;
 
   const OrdersState({
     this.loadedOrder = const <Order> [],
@@ -17,6 +18,7 @@ class OrdersState extends Equatable {
     this.status = OrdersStatus.initial,
     this.currentStatus = CurrentListStatus.initial,
     this.hasReachedMax = false,
+    this.orderValidationStatus = '',
   });
 
   OrdersState copyWith({
@@ -25,6 +27,7 @@ class OrdersState extends Equatable {
   OrdersStatus? status,
   CurrentListStatus? currentStatus,
   bool? hasReachedMax,
+  String? orderValidationStatus,
   }) {
     return OrdersState(
       loadedOrder: loadedOrder ?? this.loadedOrder,
@@ -32,10 +35,11 @@ class OrdersState extends Equatable {
       ordersCount: ordersCount ?? this.ordersCount,
       currentStatus: currentStatus ?? this.currentStatus,
       hasReachedMax: hasReachedMax ?? this.hasReachedMax,
+      orderValidationStatus: orderValidationStatus ?? this.orderValidationStatus,
     );
   }
 
   @override
   List<Object> get props =>
-      [ordersCount, status, currentStatus];
+      [ordersCount, status, currentStatus, orderValidationStatus];
 }
