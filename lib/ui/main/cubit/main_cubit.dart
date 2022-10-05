@@ -7,16 +7,15 @@ import 'package:dio/dio.dart';
 
 class MainCubit extends Cubit<OrdersState> {
   final UserRepository _userRepository;
-  String currentStatus = 'PEDNING_APPROVAL'; // это дефотный статус который мы
-  // хотим отобразить при старте апки когда еще юзер ничего сам не выбрал
   int page = 1;
   bool fetching = false;
 
   MainCubit(this._userRepository) : super(const OrdersState());
 
   setCurrentStatus(String status) {
-    currentStatus = status; //Запоминаем  тот статус который ввел юзер
-    // и передал в этот метод при клике в менюшке
+    emit(state.copyWith(
+      orderValidationStatus: status,
+    ));
   }
 
   // void fetchActivities() async {
@@ -70,12 +69,11 @@ class MainCubit extends Cubit<OrdersState> {
   getOrders(String status) {
     fetching = true;
     emit(state.copyWith(status: OrdersStatus.loading));
-    _userRepository.getOrders(7, status).then((orders) {
+    _userRepository.getOrders(1, 7, status).then((orders) {
       emit(state.copyWith(
         status: OrdersStatus.complete,
         ordersCount: orders.payload?.length,
         loadedOrder: orders.payload,
-        //orderValidationStatus: orders.payload,
       ));
       if (orders.payload?.length == null || orders.payload!.isEmpty) {
         emit(state.copyWith(status: OrdersStatus.listIsEmpty));

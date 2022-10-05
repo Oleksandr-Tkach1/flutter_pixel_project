@@ -1,8 +1,10 @@
 class FormValidation {
+  static RegExp emailRegex = RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
+
   static dynamic email(String value) {
-    if (value.isEmpty && value == null) {
+    if (value.isEmpty) {
       return "Invalid email";
-    }else if(value.contains('@')){
+    }else if(emailRegex.hasMatch(value)){
       return null;
     }else {
       return "Invalid email";

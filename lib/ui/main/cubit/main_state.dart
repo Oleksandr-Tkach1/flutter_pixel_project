@@ -18,7 +18,7 @@ class OrdersState extends Equatable {
     this.status = OrdersStatus.initial,
     this.currentStatus = CurrentListStatus.initial,
     this.hasReachedMax = false,
-    this.orderValidationStatus = '',
+    this.orderValidationStatus = 'PEDNING_APPROVAL',
   });
 
   OrdersState copyWith({

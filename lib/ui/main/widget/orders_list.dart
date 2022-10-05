@@ -4,28 +4,19 @@ import 'package:flutter_pixel_project/ui/main/cubit/main_cubit.dart';
 import 'package:flutter_pixel_project/ui/main/cubit/main_state.dart';
 import 'package:flutter_pixel_project/utils/Colors.dart';
 
+// ignore: must_be_immutable
 class OrdersListWidget extends StatefulWidget {
-  const OrdersListWidget({super.key});
+  String? status;
 
+  OrdersListWidget({super.key, this.status});
 
   @override
   State<OrdersListWidget> createState() => _OrdersListWidgetState();
 }
 
 class _OrdersListWidgetState extends State<OrdersListWidget> {
-
-  @override
-  void initState() {
-    // достаем последнний сохраненный статус и передаем в метод getOrders
-    var currentStatus = BlocProvider.of<MainCubit>(context).currentStatus;
-    BlocProvider.of<MainCubit>(context).getOrders(currentStatus);
-    super.initState();
-  }
-
   String getImageUrl(OrdersState state, int index) {
-    var url = 'https://d15oaqjca840o0.cloudfront.net/orders/${state.loadedOrder![index].user!.sId!}/${state.loadedOrder![index].id!}/thumb/${state.loadedOrder![index].images![0].userImage!}';
-    print(url);
-    return url;
+    return 'https://d15oaqjca840o0.cloudfront.net/orders/${state.loadedOrder[index].user!.sId!}/${state.loadedOrder[index].id!}/thumb/${state.loadedOrder[index].images![0].userImage!}';
   }
 
   @override
@@ -34,13 +25,14 @@ class _OrdersListWidgetState extends State<OrdersListWidget> {
       builder: (context, state) {
         if (state.status == OrdersStatus.loading) {
           return const Center(child: CircularProgressIndicator());
-        } else if(state.status == OrdersStatus.listIsEmpty){
-          return Center(child: Image.asset('assets/photo_2022-09-30_19-35-56.png'));
+        } else if (state.status == OrdersStatus.listIsEmpty) {
+          return Center(
+              child: Image.asset('assets/photo_2022-09-30_19-35-56.png'));
         } else {
           return RefreshIndicator(
             onRefresh: () async {
-              var currentStatus = BlocProvider.of<MainCubit>(context).currentStatus;
-              BlocProvider.of<MainCubit>(context).getOrders(currentStatus);
+              BlocProvider.of<MainCubit>(context)
+                  .getOrders(state.orderValidationStatus);
             },
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -49,9 +41,7 @@ class _OrdersListWidgetState extends State<OrdersListWidget> {
                   child: Padding(
                     padding: const EdgeInsets.all(4.0),
                     child: ListView.separated(
-                        separatorBuilder: (context, index) => const SizedBox(
-                          height: 10,
-                        ),
+                        separatorBuilder: (context, index) => const SizedBox(height: 10),
                         scrollDirection: Axis.vertical,
                         shrinkWrap: true,
                         padding: const EdgeInsets.all(8),
@@ -75,28 +65,32 @@ class _OrdersListWidgetState extends State<OrdersListWidget> {
                               color: CustomColors.primaryBlack.shade100,
                               child: Center(
                                 child: ListTile(
-                                  trailing: Image.network(getImageUrl(state, index), width: 100, height: 100,fit: BoxFit.cover),
+                                  trailing: Image.network(
+                                      getImageUrl(state, index),
+                                      width: 100,
+                                      height: 100,
+                                      fit: BoxFit.cover),
                                   leading: Column(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
-                                      Text(state.loadedOrder?[index].orderId.toString() ?? '', style: const TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight. bold)),
-                                      Container(
-                                        width: 12,
-                                        height: 12,
-                                          decoration: BoxDecoration(
-                                            color: state.loadedOrder[index].qaDetails!.startTime != null ? Colors.red : Colors.green,
-                                            shape: BoxShape.circle,
-                                        ),
-                                      ),
+                                      Text(
+                                          state.loadedOrder[index].orderId.toString() ?? '',
+                                          style: const TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.bold)),
+                                          Container(width: 12, height: 12, child: setCurrentStatus(state, index)
+                                          ),
                                     ],
                                   ),
                                 ),
                               ),
                             ),
                           );
-                        }
-                    ),
+                        }),
                   ),
                 ),
               ],
@@ -105,5 +99,24 @@ class _OrdersListWidgetState extends State<OrdersListWidget> {
         }
       },
     );
+  }
+  setCurrentStatus(OrdersState state, dynamic index){
+    if(widget.status == 'PEDNING_APPROVAL'){
+      return
+      Container(
+        width: 12,
+        height: 12,
+        decoration: BoxDecoration(
+          color: state.loadedOrder[index]
+              .qaDetails!.startTime != null
+              ? Colors.red
+              : Colors.green,
+          shape: BoxShape.circle,
+        ),
+      );
+    }else{
+      return
+      Container();
+    }
   }
 }

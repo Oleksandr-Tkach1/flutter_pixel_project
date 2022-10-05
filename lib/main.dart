@@ -54,7 +54,7 @@ class MainAppState extends State<MainApp> {
       case AuthenticationStatus.loading:
         return const SplashPage();
       case AuthenticationStatus.authenticated:
-        return const MainPage();
+        return MainPage();
       case AuthenticationStatus.unauthenticated:
         return const AuthorizationPage();
       default: return const AuthorizationPage();
