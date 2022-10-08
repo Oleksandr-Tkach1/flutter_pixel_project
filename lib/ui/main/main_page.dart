@@ -27,7 +27,7 @@ class MainPageState extends State<MainPage> {
   @override
   void initState() {
     mainCubit = BlocProvider.of<MainCubit>(context);
-    mainCubit.getOrders('PEDNING_APPROVAL');
+    mainCubit.getOrders(1, 'PEDNING_APPROVAL');
     super.initState();
   }
 
@@ -41,7 +41,7 @@ class MainPageState extends State<MainPage> {
         if (widget.currentStatus != null &&
             widget.currentStatus != state.orderValidationStatus) {
           BlocProvider.of<MainCubit>(context)
-              .getOrders(state.orderValidationStatus);
+              .getOrders(1, state.orderValidationStatus);
         }
       },
       child: BlocBuilder<MainCubit, OrdersState>(builder: (context, state) {
@@ -68,7 +68,7 @@ class MainPageState extends State<MainPage> {
     Timer.periodic(const Duration(seconds: 60), (timer) {
       // достаем последнний сохраненный статус и передаем в метод getOrders
       //var currentStatus = BlocProvider.of<MainCubit>(context).currentStatus;
-      mainCubit.getOrders(widget.currentStatus!);
+      mainCubit.getOrders(1, widget.currentStatus!);
     });
   }
 
