@@ -1,7 +1,7 @@
 import 'package:flutter_pixel_project/data/app_data.dart';
-import 'package:flutter_pixel_project/data/model/api/get_orders/Order.dart';
 import 'package:flutter_pixel_project/data/model/api/get_orders/OrdersResponse.dart';
 import 'package:flutter_pixel_project/data/model/api/response/Access.dart';
+import 'package:flutter_pixel_project/data/model/order_details/OrderDetails.dart';
 import 'package:flutter_pixel_project/data/source/user_data_source.dart';
 import 'package:flutter_pixel_project/network/server_api.dart';
 
@@ -30,7 +30,12 @@ class UserRepository extends UserDataSource {
   }
 
   @override
-  Future<OrdersResponse> getOrders(int page, int limit, String status) {
-    return client.getOrders(page, limit, status);
+  Future<OrdersResponse> getOrders(int page, String status) {
+    return client.getOrders(page, 10, status);
+  }
+
+  @override
+  Future<OrderDetails> getOrderDetails(String id) {
+    return client.getOrderDetails(id);
   }
 }

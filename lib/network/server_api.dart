@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_pixel_project/data/model/api/get_orders/OrdersResponse.dart';
 import 'package:flutter_pixel_project/data/model/api/response/TokenResponse.dart';
+import 'package:flutter_pixel_project/data/model/order_details/OrderDetails.dart';
 import 'package:flutter_pixel_project/data/model/request/auth_request.dart';
 import 'package:flutter_pixel_project/network/interceptor/oauth_interceptor.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
@@ -37,4 +38,7 @@ abstract class RestClient {
 
   @POST("/v2/auth/login")
   Future<TokenResponse> authenticate(@Body() AuthRequest authRequest);
+
+  @PUT("/v2/orders/id/qa")
+  Future<OrderDetails> getOrderDetails(@Path('id') String id);
 }

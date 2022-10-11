@@ -43,6 +43,7 @@ class MainAppState extends State<MainApp> {
           title: 'Flutter Demo',
           theme: ThemeData(
             primarySwatch: Colors.grey,
+              unselectedWidgetColor:Colors.white
           ),
           home: navigateToHomeWidget(state),
         );

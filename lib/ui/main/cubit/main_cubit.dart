@@ -1,6 +1,4 @@
 import 'package:bloc/bloc.dart';
-import 'package:flutter_pixel_project/data/model/api/get_orders/Order.dart';
-import 'package:flutter_pixel_project/data/model/api/get_orders/OrdersResponse.dart';
 import 'package:flutter_pixel_project/data/repositories/user_repository.dart';
 import 'package:flutter_pixel_project/ui/main/cubit/main_state.dart';
 import 'package:dio/dio.dart';
@@ -18,15 +16,16 @@ class MainCubit extends Cubit<OrdersState> {
     ));
   }
 
+
   void fetchActivities() async {
     if (state.hasReachedMax) {
       emit(state);
       return;
     }
-    if (state.status == CurrentListStatus.initial && fetching) {
-      final activities = await getOrders(0, state.orderValidationStatus);
+    if (state.status == OrdersStatus.initial && !fetching) {
+      final activities = await _fetchActivities(0, state.orderValidationStatus);
       emit(state.copyWith(
-        currentStatus: CurrentListStatus.success,
+        status: OrdersStatus.complete,
         loadedOrder: activities,
         hasReachedMax: false,
       ));
@@ -38,7 +37,7 @@ class MainCubit extends Cubit<OrdersState> {
       emit(state.copyWith(hasReachedMax: true));
     } else {
       emit(state.copyWith(
-        currentStatus: CurrentListStatus.success,
+        status: OrdersStatus.complete,
         loadedOrder: List.of(state.loadedOrder)..addAll(activities),
         hasReachedMax: false,
       ));
@@ -46,35 +45,28 @@ class MainCubit extends Cubit<OrdersState> {
     }
   }
 
-  // String _mapHtmlContentToString(String htmlString) {
-  //   if(htmlString == null) return '';
-  //
-  //   final document = parse(htmlString);
-  //   htmlString = parse(document.body.text).documentElement.text;
-  //
-  //   return htmlString;
-  // }
-  //
-  // Future<List<Activity>> _fetchActivities(int page) async {
-  //   fetching = true;
-  //   return _activitiesRepository
-  //       .getActivities(page)
-  //       .then((activities) {
-  //     activities.forEach((activity) => activity.message = _mapHtmlContentToString(activity.content));
-  //     return activities;
-  //   })
-  //       .whenComplete(() => fetching = false)
-  //       .catchError((Object obj) {
-  //     log.e(obj);
-  //     fetching = false;
-  //     emit(state.copyWith(status: ActivityStatus.failure));
-  //   });
-  // }
-
-  getOrders(int page, String? status) {
+  Future<dynamic> _fetchActivities([int? page, String? status]) async {
     fetching = true;
+    return _userRepository.getOrders(page!, status!).then((orders) {
+      emit(state.copyWith(
+        status: OrdersStatus.complete,
+        ordersCount: orders.payload?.length,
+        loadedOrder: orders.payload,
+      ));
+      return orders;
+    }).whenComplete(() => fetching = false).catchError((Object obj) {
+      fetching = false;
+      switch (obj.runtimeType) {
+        case DioError:
+          emit(state.copyWith(status: OrdersStatus.error));
+      }
+    });
+  }
+
+  getOrders([int? page, String? status]) async{
     emit(state.copyWith(status: OrdersStatus.loading));
-    _userRepository.getOrders(page, 7, status!).then((orders) {
+    return
+    _userRepository.getOrders(page!, status!).then((orders) {
       emit(state.copyWith(
         status: OrdersStatus.complete,
         ordersCount: orders.payload?.length,
@@ -83,8 +75,8 @@ class MainCubit extends Cubit<OrdersState> {
       if (orders.payload?.length == null || orders.payload!.isEmpty) {
         emit(state.copyWith(status: OrdersStatus.listIsEmpty));
       }
+      return orders;
     }).catchError((Object obj) {
-      fetching = false;
       switch (obj.runtimeType) {
         case DioError:
           emit(state.copyWith(status: OrdersStatus.error));

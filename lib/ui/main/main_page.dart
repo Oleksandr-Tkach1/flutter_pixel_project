@@ -33,9 +33,9 @@ class MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
-    setState(() {
-      timerRefreshOrder();
-    });
+    // setState(() {
+    //   timerRefreshOrder();
+    // });
     return BlocListener<MainCubit, OrdersState>(
       listener: (BuildContext context, state) {
         if (widget.currentStatus != null &&
@@ -64,17 +64,15 @@ class MainPageState extends State<MainPage> {
     );
   }
 
-  timerRefreshOrder() {
-    Timer.periodic(const Duration(seconds: 60), (timer) {
-      // достаем последнний сохраненный статус и передаем в метод getOrders
-      //var currentStatus = BlocProvider.of<MainCubit>(context).currentStatus;
-      mainCubit.getOrders(1, widget.currentStatus!);
-    });
-  }
+  // timerRefreshOrder() {
+  //   Timer.periodic(const Duration(seconds: 60), (timer) {
+  //     mainCubit.getOrders(1, widget.currentStatus!);
+  //   });
+  // }
 
   @override
   void dispose() {
-    timerRefreshOrder().dispose();
+    //timerRefreshOrder().deactivate();
     super.dispose();
   }
 }
