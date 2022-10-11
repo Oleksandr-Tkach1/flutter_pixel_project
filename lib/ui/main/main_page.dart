@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_pixel_project/bloc/auth/auth_bloc.dart';
 import 'package:flutter_pixel_project/ui/main/cubit/main_cubit.dart';
 import 'package:flutter_pixel_project/ui/main/cubit/main_state.dart';
 import 'package:flutter_pixel_project/ui/main/widget/orders_list.dart';
@@ -20,14 +19,12 @@ class MainPage extends StatefulWidget {
 }
 
 class MainPageState extends State<MainPage> {
-  late final VoidCallback? onActionClick0;
-  late AuthenticationBloc authenticationBloc;
   late MainCubit mainCubit;
 
   @override
   void initState() {
     mainCubit = BlocProvider.of<MainCubit>(context);
-    mainCubit.getOrders(1, 'PEDNING_APPROVAL');
+    mainCubit.getOrders(10, 'PEDNING_APPROVAL');
     super.initState();
   }
 
@@ -41,7 +38,7 @@ class MainPageState extends State<MainPage> {
         if (widget.currentStatus != null &&
             widget.currentStatus != state.orderValidationStatus) {
           BlocProvider.of<MainCubit>(context)
-              .getOrders(1, state.orderValidationStatus);
+              .getOrders(10, state.orderValidationStatus);
         }
       },
       child: BlocBuilder<MainCubit, OrdersState>(builder: (context, state) {

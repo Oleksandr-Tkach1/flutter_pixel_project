@@ -57,7 +57,7 @@ class _OrdersListWidgetState extends State<OrdersListWidget> {
                         padding: const EdgeInsets.all(8),
                         itemBuilder: (BuildContext context, int index) {
                           return index >= state.ordersCount
-                              ? state.ordersCount >= 7
+                              ? state.ordersCount >= 10
                               ? const BottomLoader()
                               : const SizedBox()
                               : OrderItem(state: state,
@@ -68,7 +68,7 @@ class _OrdersListWidgetState extends State<OrdersListWidget> {
                         },
                       itemCount: state.hasReachedMax
                           ? state.ordersCount
-                          : state.ordersCount + 1,
+                          : state.ordersCount + 10,
                       controller: _scrollController,
                         ),
                   ),

@@ -5,7 +5,7 @@ import 'package:dio/dio.dart';
 
 class MainCubit extends Cubit<OrdersState> {
   final UserRepository _userRepository;
-  int page = 1;
+  int page = 10;
   bool fetching = false;
 
   MainCubit(this._userRepository) : super(const OrdersState());
@@ -16,36 +16,36 @@ class MainCubit extends Cubit<OrdersState> {
     ));
   }
 
-
   void fetchActivities() async {
     if (state.hasReachedMax) {
       emit(state);
       return;
     }
-    if (state.status == OrdersStatus.initial && !fetching) {
-      final activities = await _fetchActivities(0, state.orderValidationStatus);
-      emit(state.copyWith(
-        status: OrdersStatus.complete,
-        loadedOrder: activities,
-        hasReachedMax: false,
-      ));
-      return;
-    }
+    // if (state.status == OrdersStatus.initial && !fetching) {
+    //   final activities = await _fetchActivities(10, state.orderValidationStatus);
+    //   emit(state.copyWith(
+    //     status: OrdersStatus.complete,
+    //     loadedOrder: activities,
+    //     hasReachedMax: false,
+    //   ));
+    //   return;
+    // }
     if (fetching) return;
-    final activities = await getOrders(page, state.orderValidationStatus);
-    if (activities == null || activities.isEmpty) {
+    final orders = await _fetchOrders(page, state.orderValidationStatus);
+    if (orders == null) {
       emit(state.copyWith(hasReachedMax: true));
     } else {
       emit(state.copyWith(
         status: OrdersStatus.complete,
-        loadedOrder: List.of(state.loadedOrder)..addAll(activities),
+        loadedOrder: List.of(state.loadedOrder)..addAll(orders),
         hasReachedMax: false,
       ));
-      page++;
+      page+=10;
     }
   }
 
-  Future<dynamic> _fetchActivities([int? page, String? status]) async {
+
+  Future<dynamic> _fetchOrders([int? page, String? status]) async {
     fetching = true;
     return _userRepository.getOrders(page!, status!).then((orders) {
       emit(state.copyWith(
@@ -53,7 +53,7 @@ class MainCubit extends Cubit<OrdersState> {
         ordersCount: orders.payload?.length,
         loadedOrder: orders.payload,
       ));
-      return orders;
+      return orders.payload;
     }).whenComplete(() => fetching = false).catchError((Object obj) {
       fetching = false;
       switch (obj.runtimeType) {
