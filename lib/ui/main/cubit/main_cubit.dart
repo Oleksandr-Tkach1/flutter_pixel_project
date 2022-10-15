@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
+import 'package:flutter_pixel_project/data/model/api/get_orders/Order.dart';
 import 'package:flutter_pixel_project/data/repositories/user_repository.dart';
 import 'package:flutter_pixel_project/ui/main/cubit/main_state.dart';
-import 'package:dio/dio.dart';
 
 class MainCubit extends Cubit<OrdersState> {
   final UserRepository _userRepository;
@@ -16,20 +16,23 @@ class MainCubit extends Cubit<OrdersState> {
     ));
   }
 
-  void fetchActivities() async {
+  void fetchOrders() async {
     if (state.hasReachedMax) {
       emit(state);
       return;
     }
-    // if (state.status == OrdersStatus.initial && !fetching) {
-    //   final activities = await _fetchActivities(10, state.orderValidationStatus);
-    //   emit(state.copyWith(
-    //     status: OrdersStatus.complete,
-    //     loadedOrder: activities,
-    //     hasReachedMax: false,
-    //   ));
-    //   return;
-    // }
+    if (state.status == OrdersStatus.initial && !fetching) {
+      emit(state.copyWith(
+        status: OrdersStatus.loading,
+      ));
+      final orders = await _fetchOrders(10, state.orderValidationStatus);
+      emit(state.copyWith(
+        status: orders!.isNotEmpty ? OrdersStatus.complete : OrdersStatus.listIsEmpty,
+        loadedOrder: orders,
+        hasReachedMax: false,
+      ));
+      return;
+    }
     if (fetching) return;
     final orders = await _fetchOrders(page, state.orderValidationStatus);
     if (orders == null) {
@@ -37,50 +40,30 @@ class MainCubit extends Cubit<OrdersState> {
     } else {
       emit(state.copyWith(
         status: OrdersStatus.complete,
-        loadedOrder: List.of(state.loadedOrder)..addAll(orders),
+        loadedOrder: List.of(state.loadedOrders)..addAll(orders),
         hasReachedMax: false,
       ));
       page+=10;
     }
   }
 
-
-  Future<dynamic> _fetchOrders([int? page, String? status]) async {
+  Future<List<Order>?> _fetchOrders([int? page, String? status]) async {
     fetching = true;
-    return _userRepository.getOrders(page!, status!).then((orders) {
-      emit(state.copyWith(
-        status: OrdersStatus.complete,
-        ordersCount: orders.payload?.length,
-        loadedOrder: orders.payload,
-      ));
-      return orders.payload;
-    }).whenComplete(() => fetching = false).catchError((Object obj) {
+    return _userRepository
+        .getOrders(page!, status!)
+        .then((value) => value.payload)
+        .whenComplete(() => fetching = false)
+        .catchError((Object obj) {
       fetching = false;
-      switch (obj.runtimeType) {
-        case DioError:
-          emit(state.copyWith(status: OrdersStatus.error));
-      }
+      emit(state.copyWith(status: OrdersStatus.error));
     });
   }
 
-  getOrders([int? page, String? status]) async{
-    emit(state.copyWith(status: OrdersStatus.loading));
-    return
-    _userRepository.getOrders(page!, status!).then((orders) {
-      emit(state.copyWith(
-        status: OrdersStatus.complete,
-        ordersCount: orders.payload?.length,
-        loadedOrder: orders.payload,
-      ));
-      if (orders.payload?.length == null || orders.payload!.isEmpty) {
-        emit(state.copyWith(status: OrdersStatus.listIsEmpty));
-      }
-      return orders;
-    }).catchError((Object obj) {
-      switch (obj.runtimeType) {
-        case DioError:
-          emit(state.copyWith(status: OrdersStatus.error));
-      }
-    });
+  void resetState(String? currentStatus) {
+    emit(state.copyWith(
+        status: OrdersStatus.initial,
+        loadedOrder: List.empty(),
+        hasReachedMax: false,
+        orderValidationStatus: currentStatus));
   }
 }

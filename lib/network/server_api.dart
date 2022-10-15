@@ -39,6 +39,6 @@ abstract class RestClient {
   @POST("/v2/auth/login")
   Future<TokenResponse> authenticate(@Body() AuthRequest authRequest);
 
-  @PUT("/v2/orders/id/qa")
+  @PUT("/v2/orders/{id}/qa")
   Future<OrderDetails> getOrderDetails(@Path('id') String id);
 }

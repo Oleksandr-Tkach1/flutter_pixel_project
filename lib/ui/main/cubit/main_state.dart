@@ -6,12 +6,12 @@ enum OrdersStatus { initial, error, complete, loading, listIsEmpty }
 class OrdersState extends Equatable {
   final int ordersCount;
   final OrdersStatus status;
-  final List<Order> loadedOrder;
+  final List<Order> loadedOrders;
   final bool hasReachedMax;
   final String orderValidationStatus;
 
   const OrdersState({
-    this.loadedOrder = const <Order> [],
+    this.loadedOrders = const <Order> [],
     this.ordersCount = 0,
     this.status = OrdersStatus.initial,
     this.hasReachedMax = false,
@@ -26,7 +26,7 @@ class OrdersState extends Equatable {
     String? orderValidationStatus,
   }) {
     return OrdersState(
-      loadedOrder: loadedOrder ?? this.loadedOrder,
+      loadedOrders: loadedOrder ?? this.loadedOrders,
       status: status ?? this.status,
       ordersCount: ordersCount ?? this.ordersCount,
       hasReachedMax: hasReachedMax ?? this.hasReachedMax,
@@ -36,5 +36,5 @@ class OrdersState extends Equatable {
 
   @override
   List<Object> get props =>
-      [ordersCount, status, orderValidationStatus];
+      [ordersCount, status, orderValidationStatus, loadedOrders];
 }

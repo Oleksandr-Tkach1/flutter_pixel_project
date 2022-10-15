@@ -7,6 +7,7 @@ abstract class UserDataSource {
   AccessToken saveAccessToken(AccessToken response);
   void removeAccessData();
 
-  Future<OrdersResponse> getOrders(int page, String status);
+  Future<OrdersResponse> getOrders(int offset, String status);
+
   Future<OrderDetails> getOrderDetails(String id);
 }

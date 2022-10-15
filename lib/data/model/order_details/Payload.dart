@@ -88,7 +88,7 @@ class Payload {
   int? orderId;
   String? photoType;
   String? platForm;
-  int? price;
+  num? price;
   int? priorityAi;
   QaDetails? qaDetails;
   String? ratio;

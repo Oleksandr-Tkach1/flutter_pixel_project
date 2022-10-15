@@ -104,7 +104,6 @@ class _AuthorizationFormWidgetState extends State<AuthorizationFormWidget> {
                       prefixIcon: Icon(Icons.lock, color: CustomColors.primaryBlack.shade200),
                       enabled: true),
                   autocorrect: false,
-                  //autovalidateMode: AutovalidateMode.always,
                   textInputAction: TextInputAction.done,
                 ),
               ],

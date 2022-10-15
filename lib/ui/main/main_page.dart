@@ -24,7 +24,7 @@ class MainPageState extends State<MainPage> {
   @override
   void initState() {
     mainCubit = BlocProvider.of<MainCubit>(context);
-    mainCubit.getOrders(10, 'PEDNING_APPROVAL');
+    mainCubit.fetchOrders();
     super.initState();
   }
 
@@ -36,9 +36,9 @@ class MainPageState extends State<MainPage> {
     return BlocListener<MainCubit, OrdersState>(
       listener: (BuildContext context, state) {
         if (widget.currentStatus != null &&
-            widget.currentStatus != state.orderValidationStatus) {
-          BlocProvider.of<MainCubit>(context)
-              .getOrders(10, state.orderValidationStatus);
+            widget.currentStatus != state.orderValidationStatus && !mainCubit.fetching) {
+          mainCubit.resetState(state.orderValidationStatus);
+          mainCubit.fetchOrders();
         }
       },
       child: BlocBuilder<MainCubit, OrdersState>(builder: (context, state) {

@@ -23,7 +23,7 @@ class _OrdersListWidgetState extends State<OrdersListWidget> {
   void initState() {
     _scrollController.addListener(_onScroll);
     _cubit = BlocProvider.of<MainCubit>(context);
-    _cubit!.fetchActivities();
+    _cubit!.fetchOrders();
     super.initState();
   }
 
@@ -31,9 +31,9 @@ class _OrdersListWidgetState extends State<OrdersListWidget> {
   Widget build(BuildContext context) {
     return BlocConsumer<MainCubit, OrdersState>(
         listener: (context, state){
-          if (!state.hasReachedMax && _isBottom) {
-            _cubit!.fetchActivities();
-          }
+          // if (!state.hasReachedMax && _isBottom) {
+          //   _cubit!.fetchOrders();
+          // }
     },builder: (context, state) {
         if (state.status == OrdersStatus.loading) {
           return const Center(child: CircularProgressIndicator());
@@ -42,7 +42,7 @@ class _OrdersListWidgetState extends State<OrdersListWidget> {
         } else {
           return RefreshIndicator(
             onRefresh: () async {
-              BlocProvider.of<MainCubit>(context).getOrders(1, state.orderValidationStatus);
+              BlocProvider.of<MainCubit>(context).fetchOrders();
             },
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -56,19 +56,13 @@ class _OrdersListWidgetState extends State<OrdersListWidget> {
                         shrinkWrap: true,
                         padding: const EdgeInsets.all(8),
                         itemBuilder: (BuildContext context, int index) {
-                          return index >= state.ordersCount
-                              ? state.ordersCount >= 10
-                              ? const BottomLoader()
-                              : const SizedBox()
-                              : OrderItem(state: state,
-                            order: state.loadedOrder[index],
-                            index: index,
-                            status: widget.status,
-                          );
+                          return index >= state.loadedOrders.length
+                              ? state.loadedOrders.length >= 10 ? const BottomLoader() : const SizedBox()
+                              : OrderItem(order: state.loadedOrders[index], index: index, state: state);
                         },
                       itemCount: state.hasReachedMax
-                          ? state.ordersCount
-                          : state.ordersCount + 10,
+                          ? state.loadedOrders.length
+                          : state.loadedOrders.length + 1,
                       controller: _scrollController,
                         ),
                   ),
@@ -82,7 +76,7 @@ class _OrdersListWidgetState extends State<OrdersListWidget> {
   }
   void _onScroll() {
     if (_isBottom) {
-      _cubit!.fetchActivities();
+      _cubit!.fetchOrders();
     }
   }
 

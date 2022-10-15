@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_pixel_project/data/model/api/get_orders/Order.dart';
 import 'package:flutter_pixel_project/ui/main/cubit/main_state.dart';
-import 'package:flutter_pixel_project/ui/order/order_page.dart';
+import 'package:flutter_pixel_project/ui/order_details/order_page.dart';
 import 'package:flutter_pixel_project/utils/Colors.dart';
 class OrderItem extends StatefulWidget {
   final Order order;
@@ -17,7 +17,7 @@ class OrderItem extends StatefulWidget {
 
 class _OrderItemState extends State<OrderItem> {
   String getImageUrl(OrdersState state, int index) {
-    return 'https://d15oaqjca840o0.cloudfront.net/orders/${state.loadedOrder[index].user!.sId!}/${state.loadedOrder[index].id!}/thumb/${state.loadedOrder[index].images![0].userImage!}';
+    return 'https://d15oaqjca840o0.cloudfront.net/orders/${state.loadedOrders[index].user!.sId!}/${state.loadedOrders[index].id!}/thumb/${state.loadedOrders[index].images![0].userImage!}';
   }
 
   @override
@@ -48,14 +48,17 @@ class _OrderItemState extends State<OrderItem> {
                   height: 100,
                   fit: BoxFit.cover),
             ),
-            onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => OrderPage(index: widget.index, state: widget.state,))),
+            onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => OrderPage(
+              index: widget.index,
+              state: widget.state,
+              orderId: widget.state.loadedOrders[widget.index].id.toString(),))),
             leading: Column(
               mainAxisAlignment:
               MainAxisAlignment.spaceBetween,
               crossAxisAlignment:
               CrossAxisAlignment.start,
               children: [
-                Text(widget.state.loadedOrder[widget.index].orderId.toString() ?? '',
+                Text(widget.state.loadedOrders[widget.index].orderId.toString() ?? '',
                     style: const TextStyle(
                         color: Colors.white,
                         fontSize: 16,
@@ -76,7 +79,7 @@ class _OrderItemState extends State<OrderItem> {
           width: 12,
           height: 12,
           decoration: BoxDecoration(
-            color: state.loadedOrder[index]
+            color: state.loadedOrders[index]
                 .qaDetails!.startTime != null
                 ? Colors.red
                 : Colors.green,

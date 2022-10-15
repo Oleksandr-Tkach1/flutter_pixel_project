@@ -5,6 +5,7 @@ import 'package:flutter_pixel_project/data/repositories/user_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_pixel_project/network/server_api.dart';
 import 'package:flutter_pixel_project/ui/main/cubit/main_cubit.dart';
+import 'package:flutter_pixel_project/ui/order_details/cubit/order_details_cubit.dart';
 import 'package:flutter_pixel_project/ui/page/authorization/cubit/authorization_cubit.dart';
 
 getRepositories(RestClient client) {
@@ -19,5 +20,6 @@ getProviders(RestClient client) {
     BlocProvider(create: (context) => MainCubit(UserRepository(client))),
     BlocProvider(create: (context) => AuthorizationCubit(AuthRepository(client))),
     BlocProvider(create: (context) => AuthenticationBloc(UserRepository(client))..add(AppStarted())),
+    BlocProvider(create: (context) => OrderDetailsCubit(UserRepository(client))),
   ];
 }
