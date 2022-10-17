@@ -6,10 +6,10 @@ import 'package:flutter_pixel_project/utils/Colors.dart';
 class OrderItem extends StatefulWidget {
   final Order order;
   final int index;
-  String? status;
+  String status;
   final OrdersState state;
 
-  OrderItem({Key? key, required this.order, required this.index, this.status, required this.state}) : super(key: key);
+  OrderItem({Key? key, required this.order, required this.index, required this.status, required this.state}) : super(key: key);
 
   @override
   State<OrderItem> createState() => _OrderItemState();
@@ -63,7 +63,7 @@ class _OrderItemState extends State<OrderItem> {
                         color: Colors.white,
                         fontSize: 16,
                         fontWeight: FontWeight.bold)),
-                Container(width: 12, height: 12, child: setCurrentStatus(widget.state, widget.index)
+                Container(width: 12, height: 12, child: setCurrentStatus(widget.state, widget.index, widget.status)
                 ),
               ],
             ),
@@ -72,8 +72,8 @@ class _OrderItemState extends State<OrderItem> {
       ),
     );
   }
-  setCurrentStatus(OrdersState state, dynamic index){
-    if(widget.status == 'PEDNING_APPROVAL'){
+  setCurrentStatus(OrdersState state, dynamic index, String status){
+    if(status == 'PEDNING_APPROVAL'){
       return
         Container(
           width: 12,

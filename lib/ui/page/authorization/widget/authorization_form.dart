@@ -58,7 +58,6 @@ class _AuthorizationFormWidgetState extends State<AuthorizationFormWidget> {
                   style: TextStyle(color: CustomColors.primaryBlack.shade200),
                   controller: _emailTextController,
                   validator: (value) => FormValidation.email(value!),
-                  //autovalidateMode: AutovalidateMode.onUserInteraction,
                   textInputAction: TextInputAction.done,
                   decoration: InputDecoration(
                       enabledBorder: OutlineInputBorder(

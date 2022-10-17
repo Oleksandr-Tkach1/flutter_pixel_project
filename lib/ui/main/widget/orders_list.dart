@@ -29,12 +29,8 @@ class _OrdersListWidgetState extends State<OrdersListWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<MainCubit, OrdersState>(
-        listener: (context, state){
-          // if (!state.hasReachedMax && _isBottom) {
-          //   _cubit!.fetchOrders();
-          // }
-    },builder: (context, state) {
+    return BlocBuilder<MainCubit, OrdersState>(
+       builder: (context, state) {
         if (state.status == OrdersStatus.loading) {
           return const Center(child: CircularProgressIndicator());
         } else if (state.status == OrdersStatus.listIsEmpty) {
@@ -58,7 +54,12 @@ class _OrdersListWidgetState extends State<OrdersListWidget> {
                         itemBuilder: (BuildContext context, int index) {
                           return index >= state.loadedOrders.length
                               ? state.loadedOrders.length >= 10 ? const BottomLoader() : const SizedBox()
-                              : OrderItem(order: state.loadedOrders[index], index: index, state: state);
+                              : OrderItem(
+                              order: state.loadedOrders[index],
+                              index: index,
+                              state: state,
+                              status: widget.status!,
+                          );
                         },
                       itemCount: state.hasReachedMax
                           ? state.loadedOrders.length

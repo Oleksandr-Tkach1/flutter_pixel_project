@@ -1,5 +1,7 @@
 import 'ProductImage.dart';
 
+enum OrderStatus { accept, reject, none }
+
 class Images {
   Images({
       this.hasThumb, 
@@ -50,6 +52,9 @@ class Images {
   String? userImage;
   String? aiCompositedImage;
   String? aiImage;
+  /// this is local ui value
+  OrderStatus status = OrderStatus.none;
+  bool visibilityComment = false;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};

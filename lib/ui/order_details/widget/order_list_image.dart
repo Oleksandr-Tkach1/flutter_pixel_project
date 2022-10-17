@@ -1,31 +1,24 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_pixel_project/data/model/order_details/Images.dart';
 import 'package:flutter_pixel_project/ui/order_details/cubit/order_details_cubit.dart';
 import 'package:flutter_pixel_project/ui/order_details/cubit/order_details_state.dart';
+import 'package:flutter_pixel_project/utils/form_validation.dart';
 import 'package:photo_view/photo_view.dart';
 
-enum SingingCharacter { accept, reject, none }
-
 class OrderListImage extends StatefulWidget {
-  const OrderListImage({
-    Key? key,
-  }) : super(key: key);
+  const OrderListImage({Key? key}) : super(key: key);
 
   @override
   State<OrderListImage> createState() => _OrderListImageState();
 }
 
 class _OrderListImageState extends State<OrderListImage> {
-  final _scrollController = ScrollController();
-  SingingCharacter? _character = SingingCharacter.none;
-  bool bottomButtonList = false;
+  final _commentTextController = TextEditingController();
 
-  @override
-  void initState() {
-    _scrollController.addListener(_onScroll);
-    super.initState();
-  }
+  ///Test
+  String baseUrlImage = 'https://dailystorm.ru/media/images/2020/09/29/843a1336-4b8d-412c-a97d-d1369d440730.jpg';
 
   @override
   Widget build(BuildContext context) {
@@ -35,23 +28,32 @@ class _OrderListImageState extends State<OrderListImage> {
         return const Center(child: CircularProgressIndicator());
       } else {
         return ListView.separated(
-            controller: _scrollController,
             separatorBuilder: (context, index) => const SizedBox(height: 10),
             scrollDirection: Axis.vertical,
             itemCount: state.orderDetails!.images!.length,
             itemBuilder: (BuildContext context, int index) {
-              return Column(
+              if (index == state.orderDetails!.images!.length - 1) {
+                return Padding(
+                  padding: const EdgeInsets.only(bottom: 25, left: 55, right: 55),
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      minimumSize: const Size(500, 56),
+                      backgroundColor: Colors.green,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20.0),
+                      ),
+                    ),
+                    onPressed: () => '',
+                    child: const Text('Accept', style: TextStyle(color: Colors.white, fontSize: 21)),
+                  ),
+                );
+              } else {
+                return Column(
                   children: [
                     Container(
                       margin: const EdgeInsets.all(8),
-                      width: MediaQuery
-                          .of(context)
-                          .size
-                          .width,
-                      height: MediaQuery
-                          .of(context)
-                          .size
-                          .height / 2,
+                      width: MediaQuery.of(context).size.width,
+                      height: MediaQuery.of(context).size.height / 2,
                       child: Card(
                         color: Colors.white,
                         child: PhotoView(
@@ -59,21 +61,19 @@ class _OrderListImageState extends State<OrderListImage> {
                             color: Colors.transparent,
                           ),
                           imageProvider: CachedNetworkImageProvider(
-                            getLeftImageOrderUrl(state, index),
-                          ),
+                            errorListener: (){
+                              baseUrlImage;
+                              print('status 404');
+                            },
+                              getLeftImageOrderUrl(state, index),
+                              ),
                         ),
                       ),
                     ),
                     Container(
                       margin: const EdgeInsets.all(8),
-                      width: MediaQuery
-                          .of(context)
-                          .size
-                          .width,
-                      height: MediaQuery
-                          .of(context)
-                          .size
-                          .height / 2,
+                      width: MediaQuery.of(context).size.width,
+                      height: MediaQuery.of(context).size.height / 2,
                       child: Card(
                         color: Colors.white,
                         child: PhotoView(
@@ -81,8 +81,13 @@ class _OrderListImageState extends State<OrderListImage> {
                             color: Colors.transparent,
                           ),
                           imageProvider: CachedNetworkImageProvider(
-                            getRightImageOrder(state, index),
-                          ),
+                            errorListener: (){
+                              baseUrlImage;
+                              print('status 404');
+                            },
+                              //baseUrlImage
+                              getRightImageOrder(state, index),
+                              ),
                         ),
                       ),
                     ),
@@ -94,12 +99,13 @@ class _OrderListImageState extends State<OrderListImage> {
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontWeight: FontWeight.bold)),
-                            leading: Radio<SingingCharacter>(
-                              value: SingingCharacter.accept,
-                              groupValue: _character,
-                              onChanged: (SingingCharacter? value) {
+                            leading: Radio<OrderStatus?>(
+                              value: OrderStatus.accept,
+                              groupValue: state.orderDetails!.images![index].status,
+                              onChanged: (OrderStatus? status) {
                                 setState(() {
-                                  _character = value;
+                                  state.orderDetails!.images![index].status = OrderStatus.accept;
+                                  state.orderDetails!.images![index].visibilityComment = false;
                                 });
                               },
                             ),
@@ -112,12 +118,13 @@ class _OrderListImageState extends State<OrderListImage> {
                                   color: Colors.white,
                                   fontWeight: FontWeight.bold,
                                 )),
-                            leading: Radio<SingingCharacter>(
-                              value: SingingCharacter.reject,
-                              groupValue: _character,
-                              onChanged: (SingingCharacter? value) {
+                            leading: Radio<OrderStatus?>(
+                              value: OrderStatus.reject,
+                              groupValue: state.orderDetails!.images![index].status,
+                              onChanged: (OrderStatus? value) {
                                 setState(() {
-                                  _character = value;
+                                  state.orderDetails!.images![index].status = OrderStatus.reject;
+                                  state.orderDetails!.images![index].visibilityComment = true;
                                 });
                               },
                             ),
@@ -125,9 +132,35 @@ class _OrderListImageState extends State<OrderListImage> {
                         ),
                       ],
                     ),
-                    //_displayButton(),
+                    Visibility(
+                      visible: state.orderDetails!.images![index].visibilityComment,
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 10, right: 10),
+                        child: TextFormField(
+                          maxLength: 20,
+                          style: const TextStyle(color: Colors.white),
+                          controller: _commentTextController,
+                          validator: (value) => FormValidation.commentOrder(value!),
+                          decoration: const InputDecoration(
+                              counterStyle: TextStyle(color: Colors.white),
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.all(Radius.circular(20)),
+                                borderSide: BorderSide(color: Colors.grey, width: 2),
+                              ),
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.all(Radius.circular(20))),
+                              labelText: 'Comment',
+                              labelStyle: TextStyle(color: Colors.white),
+                              enabled: true),
+                          autocorrect: false,
+                          textInputAction: TextInputAction.done,
+                        ),
+                      ),
+                    ),
+                    //showOrHideDialog(),
                   ],
                 );
+              }
             });
       }
     });
@@ -139,15 +172,5 @@ class _OrderListImageState extends State<OrderListImage> {
 
   String getRightImageOrder(OrderDetailsState state, int index) {
     return 'https://d15oaqjca840o0.cloudfront.net/orders/${state.orderDetails?.user}/${state.orderDetails?.id!}/${state.orderDetails?.images![index].aiCompositedImage!}';
-  }
-
-  _onScroll() {
-    if (_scrollController.offset >= _scrollController.position.maxScrollExtent &&
-        !_scrollController.position.outOfRange) {
-      print('The list has reached the end');
-      return bottomButtonList = true;
-    }else{
-      return bottomButtonList = false;
-    }
   }
 }

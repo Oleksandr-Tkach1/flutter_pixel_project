@@ -18,4 +18,12 @@ class FormValidation {
       return null;
     }
   }
+
+  static dynamic commentOrder(String value) {
+    if (value.isEmpty) {
+      return "Field must not be empty";
+    }else {
+      return null;
+    }
+  }
 }
