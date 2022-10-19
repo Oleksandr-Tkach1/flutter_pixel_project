@@ -1,5 +1,3 @@
-import 'ProductImage.dart';
-
 enum OrderStatus { accept, reject, none }
 
 class Images {
@@ -15,8 +13,7 @@ class Images {
       this.compositedImage, 
       this.designerImage, 
       this.designerImagePNG, 
-      this.productImage, 
-      this.userImage, 
+      this.userImage,
       this.aiCompositedImage, 
       this.aiImage,});
 
@@ -32,7 +29,6 @@ class Images {
     compositedImage = json['compositedImage'];
     designerImage = json['designerImage'];
     designerImagePNG = json['designerImagePNG'];
-    productImage = json['productImage'] != null ? ProductImage.fromJson(json['productImage']) : null;
     userImage = json['userImage'];
     aiCompositedImage = json['aiCompositedImage'];
     aiImage = json['aiImage'];
@@ -48,7 +44,6 @@ class Images {
   String? compositedImage;
   String? designerImage;
   String? designerImagePNG;
-  ProductImage? productImage;
   String? userImage;
   String? aiCompositedImage;
   String? aiImage;
@@ -69,9 +64,6 @@ class Images {
     map['compositedImage'] = compositedImage;
     map['designerImage'] = designerImage;
     map['designerImagePNG'] = designerImagePNG;
-    if (productImage != null) {
-      map['productImage'] = productImage?.toJson();
-    }
     map['userImage'] = userImage;
     map['aiCompositedImage'] = aiCompositedImage;
     map['aiImage'] = aiImage;

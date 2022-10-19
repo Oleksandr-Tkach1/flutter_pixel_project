@@ -1,9 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_pixel_project/data/model/order_details/Images.dart';
 import 'package:flutter_pixel_project/ui/order_details/cubit/order_details_cubit.dart';
 import 'package:flutter_pixel_project/ui/order_details/cubit/order_details_state.dart';
+import 'package:flutter_pixel_project/ui/order_details/widget/radio_button.dart';
 import 'package:flutter_pixel_project/utils/form_validation.dart';
 import 'package:photo_view/photo_view.dart';
 
@@ -61,11 +61,8 @@ class _OrderListImageState extends State<OrderListImage> {
                             color: Colors.transparent,
                           ),
                           imageProvider: CachedNetworkImageProvider(
-                            errorListener: (){
-                              baseUrlImage;
-                              print('status 404');
-                            },
-                              getLeftImageOrderUrl(state, index),
+                              baseUrlImage
+                              //getLeftImageOrderUrl(state, index),
                               ),
                         ),
                       ),
@@ -81,57 +78,13 @@ class _OrderListImageState extends State<OrderListImage> {
                             color: Colors.transparent,
                           ),
                           imageProvider: CachedNetworkImageProvider(
-                            errorListener: (){
-                              baseUrlImage;
-                              print('status 404');
-                            },
-                              //baseUrlImage
-                              getRightImageOrder(state, index),
+                              baseUrlImage
+                              //getRightImageOrder(state, index),
                               ),
                         ),
                       ),
                     ),
-                    Row(
-                      children: <Widget>[
-                        Flexible(
-                          child: ListTile(
-                            title: const Text('Accept',
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold)),
-                            leading: Radio<OrderStatus?>(
-                              value: OrderStatus.accept,
-                              groupValue: state.orderDetails!.images![index].status,
-                              onChanged: (OrderStatus? status) {
-                                setState(() {
-                                  state.orderDetails!.images![index].status = OrderStatus.accept;
-                                  state.orderDetails!.images![index].visibilityComment = false;
-                                });
-                              },
-                            ),
-                          ),
-                        ),
-                        Flexible(
-                          child: ListTile(
-                            title: const Text('Reject',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                )),
-                            leading: Radio<OrderStatus?>(
-                              value: OrderStatus.reject,
-                              groupValue: state.orderDetails!.images![index].status,
-                              onChanged: (OrderStatus? value) {
-                                setState(() {
-                                  state.orderDetails!.images![index].status = OrderStatus.reject;
-                                  state.orderDetails!.images![index].visibilityComment = true;
-                                });
-                              },
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
+                    buildRadioButton(state, index),
                     Visibility(
                       visible: state.orderDetails!.images![index].visibilityComment,
                       child: Padding(
@@ -157,7 +110,6 @@ class _OrderListImageState extends State<OrderListImage> {
                         ),
                       ),
                     ),
-                    //showOrHideDialog(),
                   ],
                 );
               }
@@ -173,4 +125,34 @@ class _OrderListImageState extends State<OrderListImage> {
   String getRightImageOrder(OrderDetailsState state, int index) {
     return 'https://d15oaqjca840o0.cloudfront.net/orders/${state.orderDetails?.user}/${state.orderDetails?.id!}/${state.orderDetails?.images![index].aiCompositedImage!}';
   }
+
+  buildRadioButton(OrderDetailsState state, int index){
+    if(state.orderDetails!.status == 'REJECTED'){
+    //if(state.orderDetails!.status == 'PEDNING_APPROVAL'){
+      return RadioButton(state: state, index: index);
+    }else{
+      return Container();
+    }
+  }
+
+  // buildBottomButton(OrderDetailsState state, int index){
+  //   if(state.orderDetails!.images![index].status.index.f){
+  //     return Padding(
+  //       padding: const EdgeInsets.only(bottom: 25, left: 55, right: 55),
+  //       child: ElevatedButton(
+  //         style: ElevatedButton.styleFrom(
+  //           minimumSize: const Size(500, 56),
+  //           backgroundColor: Colors.green,
+  //           shape: RoundedRectangleBorder(
+  //             borderRadius: BorderRadius.circular(20.0),
+  //           ),
+  //         ),
+  //         onPressed: () => '',
+  //         child: const Text('Accept', style: TextStyle(color: Colors.white, fontSize: 21)),
+  //       ),
+  //     );
+  //   }else {
+  //     return Container();
+  //   }
+  // }
 }

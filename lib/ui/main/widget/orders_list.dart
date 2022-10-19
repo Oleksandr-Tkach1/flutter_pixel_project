@@ -64,7 +64,7 @@ class _OrdersListWidgetState extends State<OrdersListWidget> {
                       itemCount: state.hasReachedMax
                           ? state.loadedOrders.length
                           : state.loadedOrders.length + 1,
-                      controller: _scrollController,
+                          controller: _scrollController,
                         ),
                   ),
                 ),

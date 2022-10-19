@@ -7,12 +7,17 @@ class OrderDetailsCubit extends Cubit<OrderDetailsState> {
 
   OrderDetailsCubit(this._userRepository) : super(const OrderDetailsState());
 
-  fetchOrderDetails(String id) async {
+  fetchOrderDetails(String id, [int? index]){
+    _fetchOrderDetails(id, index ?? 0);
+  }
+
+  _fetchOrderDetails(String id, int index) async {
     emit(state.copyWith(status: Status.loading));
     return _userRepository.getOrderDetails(id).then((orderDetails) {
       emit(state.copyWith(
         status: Status.complete,
         orderDetails: orderDetails.payload,
+        visibilityComment: orderDetails.payload!.images![index].visibilityComment,
       ));
     });
   }

@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_pixel_project/data/model/api/get_orders/Order.dart';
 import 'package:flutter_pixel_project/ui/main/cubit/main_state.dart';
@@ -16,7 +17,7 @@ class OrderItem extends StatefulWidget {
 }
 
 class _OrderItemState extends State<OrderItem> {
-  String getImageUrl(OrdersState state, int index) {
+  String _getImageUrl(OrdersState state, int index) {
     return 'https://d15oaqjca840o0.cloudfront.net/orders/${state.loadedOrders[index].user!.sId!}/${state.loadedOrders[index].id!}/thumb/${state.loadedOrders[index].images![0].userImage!}';
   }
 
@@ -42,16 +43,15 @@ class _OrderItemState extends State<OrderItem> {
           child: ListTile(
             trailing: SizedBox(
               height: 100, width: 100,
-              child: Image.network(
-                  getImageUrl(widget.state, widget.index),
+              child: CachedNetworkImage(
+                imageUrl: _getImageUrl(widget.state, widget.index),
+                  errorWidget: (context, url, error) => const Icon(Icons.error_outline, size: 30, color: Color(0xFFE92020),),
                   width: 100,
                   height: 100,
-                  fit: BoxFit.cover),
+                  fit: BoxFit.cover,
+              ),
             ),
-            onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => OrderPage(
-              index: widget.index,
-              state: widget.state,
-              orderId: widget.state.loadedOrders[widget.index].id.toString(),))),
+            onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => _showDialog(widget.state, widget.index, widget.status))),
             leading: Column(
               mainAxisAlignment:
               MainAxisAlignment.spaceBetween,
@@ -63,7 +63,7 @@ class _OrderItemState extends State<OrderItem> {
                         color: Colors.white,
                         fontSize: 16,
                         fontWeight: FontWeight.bold)),
-                Container(width: 12, height: 12, child: setCurrentStatus(widget.state, widget.index, widget.status)
+                SizedBox(width: 12, height: 12, child: setCurrentStatus(widget.state, widget.index, widget.status),
                 ),
               ],
             ),
@@ -72,23 +72,54 @@ class _OrderItemState extends State<OrderItem> {
       ),
     );
   }
-  setCurrentStatus(OrdersState state, dynamic index, String status){
+  setCurrentStatus(OrdersState state, int index, String status){
     if(status == 'PEDNING_APPROVAL'){
       return
         Container(
           width: 12,
           height: 12,
           decoration: BoxDecoration(
-            color: state.loadedOrders[index]
-                .qaDetails!.startTime != null
-                ? Colors.red
-                : Colors.green,
+            color: test(state, index),
             shape: BoxShape.circle,
           ),
         );
     }else{
       return
         Container();
+    }
+  }
+
+  _showDialog(OrdersState state, int index, String status){
+    if(status == 'PEDNING_APPROVAL' || state.loadedOrders[index].qaDetails!.startTime != null && state.loadedOrders[index].qaDetails!.startTime == '6058d2143e1ffd3614dcf56f'){
+      return
+      AlertDialog(
+        backgroundColor: AppColors.backgroundColor,
+        title: const Text('Order is busy!', style: TextStyle(color: Colors.white)),
+        content: const Text('Another qa has already taken this order', style: TextStyle(color: Colors.white)),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () => Navigator.pop(context, 'OK'),
+            child: const Text('OK', style: TextStyle(color: AppColors.acceptTextColor)),
+          ),
+        ],
+      );
+    }else{
+      return
+      OrderPage(
+          index: index,
+          state: state,
+          orderId: state.loadedOrders[index].id.toString()
+      );
+    }
+  }
+
+  test(OrdersState state, int index){
+    if(state.loadedOrders[index].qaDetails!.startTime != null){
+     return Colors.red;
+    } else if(state.loadedOrders[index].qaDetails!.startTime == '6058d2143e1ffd3614dcf56f'){
+     return Colors.yellow;
+    } else{
+     return Colors.green;
     }
   }
 }

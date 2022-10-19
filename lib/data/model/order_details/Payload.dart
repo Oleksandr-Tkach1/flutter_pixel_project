@@ -1,4 +1,3 @@
-import 'Backdrop.dart';
 import 'DesignerDetails.dart';
 import 'Images.dart';
 import 'QaDetails.dart';
@@ -7,7 +6,6 @@ class Payload {
   Payload({
       this.id, 
       this.b2c, 
-      this.backdrop, 
       this.dealer,
       this.deliveredTime, 
       this.designerDetails, 
@@ -34,12 +32,12 @@ class Payload {
       this.videoGenerated, 
       this.createdAt, 
       this.imageBaseUrl, 
-      this.updatedAt,});
+      this.updatedAt,
+  });
 
   Payload.fromJson(dynamic json) {
     id = json['_id'];
     b2c = json['b2c'];
-    backdrop = json['backdrop'] != null ? Backdrop.fromJson(json['backdrop']) : null;
     dealer = json['dealer'];
     deliveredTime = json['deliveredTime'];
     designerDetails = json['designerDetails'] != null ? DesignerDetails.fromJson(json['designerDetails']) : null;
@@ -75,7 +73,6 @@ class Payload {
   }
   String? id;
   bool? b2c;
-  Backdrop? backdrop;
   String? dealer;
   String? deliveredTime;
   DesignerDetails? designerDetails;
@@ -108,9 +105,6 @@ class Payload {
     final map = <String, dynamic>{};
     map['_id'] = id;
     map['b2c'] = b2c;
-    if (backdrop != null) {
-      map['backdrop'] = backdrop?.toJson();
-    }
     map['dealer'] = dealer;
     map['deliveredTime'] = deliveredTime;
     if (designerDetails != null) {
@@ -146,5 +140,4 @@ class Payload {
     map['updatedAt'] = updatedAt;
     return map;
   }
-
 }
