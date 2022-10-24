@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_pixel_project/utils/Colors.dart';
 import 'package:flutter_svg/svg.dart';
 
-Widget mainDrawer(){
+Widget mainDrawer(BuildContext context){
   return Drawer(
     backgroundColor: AppColors.backgroundColor,
     child: ListView(
@@ -10,7 +10,8 @@ Widget mainDrawer(){
         Container(
           color: AppColors.backgroundColor,
           child: DrawerHeader(
-            // margin: EdgeInsets.zero,
+            margin: EdgeInsets.zero,
+            padding: const EdgeInsets.only(left: 10, right: 10),
             // padding: EdgeInsets.zero,
             child: SvgPicture.asset('assets/logo.a7fc1d91.svg'),
           ),
@@ -18,6 +19,10 @@ Widget mainDrawer(){
         Column(
           mainAxisSize: MainAxisSize.max,
           children: [
+            const Padding(
+              padding: EdgeInsets.only(left: 10, right: 12, bottom: 15),
+              child: Divider(color: Color(0xFF757575)),
+            ),
             ListTile(
               minLeadingWidth: 20,
               contentPadding: const EdgeInsets.only(left: 10),
@@ -26,7 +31,9 @@ Widget mainDrawer(){
                 style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
               ),
               leading: const Icon(Icons.image, color: Colors.white, size: 28),
-              onTap: () => '',
+              onTap: () {
+                Navigator.pop(context);
+              },
             ),
             ListTile(
               minLeadingWidth: 20,
@@ -36,7 +43,9 @@ Widget mainDrawer(){
                 style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
               ),
               leading: const Icon(Icons.camera_alt, color: Colors.white, size: 28),
-              onTap: () => '',
+              onTap: () {
+                Navigator.pop(context);
+              },
             ),
             ListTile(
               minLeadingWidth: 20,
@@ -46,7 +55,9 @@ Widget mainDrawer(){
               ),
               leading: const Icon(Icons.storage, color: Colors.white, size: 28),
               contentPadding: const EdgeInsets.only(left: 10),
-              onTap: () => '',
+              onTap: (){
+                Navigator.pop(context);
+              }
             ),
             // Padding(
             //   padding: EdgeInsets.only(top: 150),

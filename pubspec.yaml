@@ -58,6 +58,8 @@ dependencies:
   photo_view: ^0.14.0
   cached_network_image: ^3.2.2
 
+  focus_detector: ^2.0.1
+
   flutter_secure_storage: ^6.0.0
 
   # The following adds the Cupertino Icons font to your application.

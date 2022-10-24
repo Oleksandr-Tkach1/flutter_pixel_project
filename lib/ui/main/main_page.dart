@@ -9,11 +9,14 @@ import 'package:flutter_pixel_project/utils/Colors.dart';
 import 'package:flutter_pixel_project/utils/drawer_main.dart';
 import 'package:flutter_svg/svg.dart';
 
+import 'package:focus_detector/focus_detector.dart';
+import 'package:logger/logger.dart';
+
 // ignore: must_be_immutable
 class MainPage extends StatefulWidget {
   String? currentStatus;
 
-  MainPage({super.key, this.currentStatus});
+  MainPage({super.key, this.currentStatus,});
 
   @override
   MainPageState createState() => MainPageState();
@@ -21,6 +24,12 @@ class MainPage extends StatefulWidget {
 
 class MainPageState extends State<MainPage> {
   late MainCubit mainCubit;
+
+  // timerRefreshOrder(){
+  //   Timer.periodic(const Duration(seconds: 80), (timer) {
+  //     mainCubit.fetchOrders();
+  //   });
+  // }
 
   @override
   void initState() {
@@ -57,21 +66,16 @@ class MainPageState extends State<MainPage> {
             ],
           ),
           body: OrdersListWidget(status: widget.currentStatus),
-          drawer: mainDrawer(),
+          drawer: mainDrawer(context),
         );
       }),
     );
   }
 
-  // timerRefreshOrder() {
-  //   Timer.periodic(const Duration(seconds: 60), (timer) {
-  //     mainCubit.getOrders(1, widget.currentStatus!);
-  //   });
+  // @override
+  // void dispose() {
+  //   timerRefreshOrder().deactivate();
+  //   timerRefreshOrder().dispose();
+  //   super.dispose();
   // }
-
-  @override
-  void dispose() {
-    //timerRefreshOrder().deactivate();
-    super.dispose();
-  }
 }

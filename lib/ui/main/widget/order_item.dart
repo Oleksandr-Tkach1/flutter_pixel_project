@@ -51,7 +51,11 @@ class _OrderItemState extends State<OrderItem> {
                   fit: BoxFit.cover,
               ),
             ),
-            onTap: () => Navigator.of(context).push(PageRouteBuilder(opaque: false, pageBuilder: (context, _, __) => _showDialog(widget.state, widget.index, widget.status))),
+            onTap: () {
+              Navigator.of(context).push(PageRouteBuilder(opaque: false,
+                  pageBuilder: (context, _, __) =>
+                      _showDialog(widget.state, widget.index, widget.status)));
+            },
             leading: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.start,
