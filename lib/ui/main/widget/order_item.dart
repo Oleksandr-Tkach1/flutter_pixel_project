@@ -51,12 +51,10 @@ class _OrderItemState extends State<OrderItem> {
                   fit: BoxFit.cover,
               ),
             ),
-            onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => _showDialog(widget.state, widget.index, widget.status))),
+            onTap: () => Navigator.of(context).push(PageRouteBuilder(opaque: false, pageBuilder: (context, _, __) => _showDialog(widget.state, widget.index, widget.status))),
             leading: Column(
-              mainAxisAlignment:
-              MainAxisAlignment.spaceBetween,
-              crossAxisAlignment:
-              CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(widget.state.loadedOrders[widget.index].orderId.toString() ?? '',
                     style: const TextStyle(
@@ -79,7 +77,7 @@ class _OrderItemState extends State<OrderItem> {
           width: 12,
           height: 12,
           decoration: BoxDecoration(
-            color: test(state, index),
+            color: checkingOrderStatus(state, index),
             shape: BoxShape.circle,
           ),
         );
@@ -90,36 +88,38 @@ class _OrderItemState extends State<OrderItem> {
   }
 
   _showDialog(OrdersState state, int index, String status){
-    if(status == 'PEDNING_APPROVAL' || state.loadedOrders[index].qaDetails!.startTime != null && state.loadedOrders[index].qaDetails!.startTime == '6058d2143e1ffd3614dcf56f'){
+    if(state.loadedOrders[index].qaDetails?.qa?.sId == '6058d2143e1ffd3614dcf56f'){
+      return OrderPage(
+            orderId: state.loadedOrders[index].id.toString(),
+        );
+    }else if(status == 'PEDNING_APPROVAL' || state.loadedOrders[index].qaDetails!.startTime != null){
       return
-      AlertDialog(
-        backgroundColor: AppColors.backgroundColor,
-        title: const Text('Order is busy!', style: TextStyle(color: Colors.white)),
-        content: const Text('Another qa has already taken this order', style: TextStyle(color: Colors.white)),
-        actions: <Widget>[
-          TextButton(
-            onPressed: () => Navigator.pop(context, 'OK'),
-            child: const Text('OK', style: TextStyle(color: AppColors.acceptTextColor)),
-          ),
-        ],
-      );
-    }else{
+        AlertDialog(
+          backgroundColor: AppColors.alertDialogColor,
+          title: const Text('Order is busy!', style: TextStyle(color: Colors.white)),
+          content: const Text('Another qa has already taken this order', style: TextStyle(color: Colors.white)),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () => Navigator.pop(context, 'OK'),
+              child: const Text('OK', style: TextStyle(color: AppColors.acceptTextColor)),
+            ),
+          ],
+        );
+    } else{
       return
       OrderPage(
-          index: index,
-          state: state,
           orderId: state.loadedOrders[index].id.toString()
       );
     }
   }
 
-  test(OrdersState state, int index){
-    if(state.loadedOrders[index].qaDetails!.startTime != null){
-     return Colors.red;
-    } else if(state.loadedOrders[index].qaDetails!.startTime == '6058d2143e1ffd3614dcf56f'){
-     return Colors.yellow;
+  checkingOrderStatus(OrdersState state, int index){
+    if(state.loadedOrders[index].qaDetails!.startTime == null){
+      return Colors.green;
+    } else if(state.loadedOrders[index].qaDetails?.qa?.sId == '6058d2143e1ffd3614dcf56f'){
+      return Colors.yellow;
     } else{
-     return Colors.green;
+      return Colors.red;
     }
   }
 }

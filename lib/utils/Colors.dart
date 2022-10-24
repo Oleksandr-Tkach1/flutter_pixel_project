@@ -28,4 +28,8 @@ abstract class AppColors {
   static const Color errorTextColor = Color(0xFFF44336);
   static const Color acceptTextColor = Color(0xFF4CAF50);
 
+  static const Color alertDialogColor = Color(0xFF585D6C);
+  static const Color actionButtonColor = Color(0xFF585D6C);
+
+  static const Color drawerColor = Color(0xFF2E3034);
 }

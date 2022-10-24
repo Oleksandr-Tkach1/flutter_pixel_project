@@ -135,24 +135,13 @@ class _OrderListImageState extends State<OrderListImage> {
     }
   }
 
-  // buildBottomButton(OrderDetailsState state, int index){
-  //   if(state.orderDetails!.images![index].status.index.f){
-  //     return Padding(
-  //       padding: const EdgeInsets.only(bottom: 25, left: 55, right: 55),
-  //       child: ElevatedButton(
-  //         style: ElevatedButton.styleFrom(
-  //           minimumSize: const Size(500, 56),
-  //           backgroundColor: Colors.green,
-  //           shape: RoundedRectangleBorder(
-  //             borderRadius: BorderRadius.circular(20.0),
-  //           ),
-  //         ),
-  //         onPressed: () => '',
-  //         child: const Text('Accept', style: TextStyle(color: Colors.white, fontSize: 21)),
-  //       ),
-  //     );
-  //   }else {
-  //     return Container();
-  //   }
-  // }
+  buildFloatingActionButton(Function function, OrderDetailsState state,) {
+    return FloatingActionButton(
+        backgroundColor: Colors.blue,
+        child: const Icon(Icons.arrow_downward),
+        onPressed: () {
+          function();
+        }
+    );
+  }
 }

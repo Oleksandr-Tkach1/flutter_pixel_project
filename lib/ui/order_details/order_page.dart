@@ -1,21 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_pixel_project/ui/main/cubit/main_state.dart';
 import 'package:flutter_pixel_project/ui/order_details/cubit/order_details_cubit.dart';
+import 'package:flutter_pixel_project/ui/order_details/cubit/order_details_state.dart';
 import 'package:flutter_pixel_project/ui/order_details/widget/order_list_image.dart';
 import 'package:flutter_pixel_project/utils/Colors.dart';
 import 'package:flutter_svg/svg.dart';
 
 class OrderPage extends StatefulWidget {
-  final int index;
-  final OrdersState state;
   final String orderId;
+  OrderDetailsState? state;
 
-  const OrderPage(
+  OrderPage(
       {Key? key,
-      required this.index,
-      required this.state,
-      required this.orderId
+        this.state,
+      required this.orderId,
       }) : super(key: key);
 
   @override
@@ -24,9 +22,12 @@ class OrderPage extends StatefulWidget {
 
 class _OrderPageState extends State<OrderPage> {
   late OrderDetailsCubit mainCubit;
+  final ScrollController _controller = ScrollController();
+  bool visibilityFloatingActionButton = false;
 
   @override
   void initState() {
+    _controller.addListener(_onScroll);
     mainCubit = BlocProvider.of<OrderDetailsCubit>(context);
     mainCubit.fetchOrderDetails(widget.orderId);
     super.initState();
@@ -44,20 +45,35 @@ class _OrderPageState extends State<OrderPage> {
         title: SvgPicture.asset('assets/gad_logo.svg', width: 110),
       ),
       body: const OrderListImage(),
-      // floatingActionButton: FloatingActionButton(
-      //   backgroundColor: Colors.blue,
-      //     child: const Icon(Icons.arrow_downward),
-      //     onPressed: () {
-      //       setState(() {
-      //         _messages.insert(0, Text("message ${_messages.length}"));
-      //       });
-      //       _scrollController.animateTo(
-      //         0.0,
-      //         curve: Curves.easeOut,
-      //         duration: const Duration(milliseconds: 300),
-      //       );
-      //     }
-      // ),
+      floatingActionButton:
+      //buildFloatingActionButton(),
+      FloatingActionButton(
+        backgroundColor: AppColors.actionButtonColor,
+          child: const Icon(Icons.arrow_downward, color: Colors.white,),
+          onPressed: () {
+            setState(() {
+              //_messages.insert(0, Text("message ${_messages.length}"));
+            });
+            _controller.animateTo(
+              0.0,
+              curve: Curves.easeOut,
+              duration: const Duration(milliseconds: 300),
+            );
+          }
+      ),
     );
   }
+
+  void _onScroll() {
+    if (_isTopPosition!) {
+      visibilityFloatingActionButton = true;
+    }
+  }
+
+  bool? get _isTopPosition {
+    if (_controller.position.atEdge || _controller.position.pixels == 0) {
+      return true;
+      }
+      return false;
+    }
 }
