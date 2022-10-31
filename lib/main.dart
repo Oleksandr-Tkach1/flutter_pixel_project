@@ -4,16 +4,19 @@ import 'package:flutter_pixel_project/bloc/auth/auth_bloc.dart';
 import 'package:flutter_pixel_project/bloc/auth/auth_state.dart';
 import 'package:flutter_pixel_project/network/server_api.dart';
 import 'package:flutter_pixel_project/providers/providers.dart';
+import 'package:flutter_pixel_project/ui/authorization_page/authorization/widget/authorization_page.dart';
 import 'package:flutter_pixel_project/ui/main/main_page.dart';
-import 'package:flutter_pixel_project/ui/page/authorization/widget/authorization_page.dart';
 import 'package:flutter_pixel_project/ui/splash/splash_page.dart';
+
+import 'network/auth_server_api.dart';
 
 void main() {
   final RestClient client = RestClient(baseUrl: 'https://gad24.tools/api');
+  final AuthRestClient authClient = AuthRestClient(baseUrl: 'https://gad24.tools/api');
   runApp(MultiRepositoryProvider(
-    providers: getRepositories(client),
+    providers: getRepositories(client, authClient),
     child: MultiBlocProvider(
-        providers: getProviders(client), child: const MainApp()),
+        providers: getProviders(client, authClient), child: const MainApp()),
   ));
 }
 

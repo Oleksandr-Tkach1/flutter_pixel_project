@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_pixel_project/ui/page/authorization/cubit/authorization_cubit.dart';
-import 'package:flutter_pixel_project/ui/page/authorization/cubit/authorization_state.dart';
 import 'package:flutter_pixel_project/utils/Colors.dart';
 import 'package:flutter_pixel_project/utils/form_validation.dart';
 import 'package:flutter_svg/svg.dart';
+import '../cubit/authorization_cubit.dart';
+import '../cubit/authorization_state.dart';
 
 class AuthorizationFormWidget extends StatefulWidget {
   final AuthorizationState state;
@@ -120,7 +120,7 @@ class _AuthorizationFormWidgetState extends State<AuthorizationFormWidget> {
                 }
               },
               style: ElevatedButton.styleFrom(
-                minimumSize: Size(500, 56),
+                minimumSize: const Size(500, 56),
                 backgroundColor: AppColors.buttonColor,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20.0),

@@ -1,5 +1,6 @@
 import 'package:flutter_pixel_project/data/app_data.dart';
 import 'package:flutter_pixel_project/data/model/api/get_orders/OrdersResponse.dart';
+import 'package:flutter_pixel_project/data/model/api/get_orders_archive/OrdersArchive.dart';
 import 'package:flutter_pixel_project/data/model/api/response/Access.dart';
 import 'package:flutter_pixel_project/data/model/order_details/OrderDetails.dart';
 import 'package:flutter_pixel_project/data/source/user_data_source.dart';
@@ -32,6 +33,11 @@ class UserRepository extends UserDataSource {
   @override
   Future<OrdersResponse> getOrders(int offset, String status) async {
     return await client.getOrders(1, offset, status);
+  }
+
+  @override
+  Future<OrdersArchive> getOrdersArchive(int offset) async {
+    return await client.getOrdersArchive(1, offset);
   }
 
   @override

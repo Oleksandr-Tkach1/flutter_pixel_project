@@ -4,6 +4,7 @@ import 'package:flutter_pixel_project/data/model/api/get_orders/Order.dart';
 import 'package:flutter_pixel_project/ui/main/cubit/main_state.dart';
 import 'package:flutter_pixel_project/ui/order_details/order_page.dart';
 import 'package:flutter_pixel_project/utils/Colors.dart';
+
 class OrderItem extends StatefulWidget {
   final Order order;
   final int index;
@@ -96,7 +97,7 @@ class _OrderItemState extends State<OrderItem> {
       return OrderPage(
             orderId: state.loadedOrders[index].id.toString(),
         );
-    }else if(status == 'PEDNING_APPROVAL' || state.loadedOrders[index].qaDetails!.startTime != null){
+    }else if(status == 'PEDNING_APPROVAL' && state.loadedOrders[index].qaDetails!.startTime != null){
       return
         AlertDialog(
           backgroundColor: AppColors.alertDialogColor,

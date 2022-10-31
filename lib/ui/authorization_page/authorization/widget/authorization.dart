@@ -3,9 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_pixel_project/bloc/auth/auth_bloc.dart';
 import 'package:flutter_pixel_project/bloc/auth/auth_event.dart';
 import 'package:flutter_pixel_project/ui/app_alert.dart';
-import 'package:flutter_pixel_project/ui/page/authorization/cubit/authorization_cubit.dart';
-import 'package:flutter_pixel_project/ui/page/authorization/cubit/authorization_state.dart';
-import 'package:flutter_pixel_project/ui/page/authorization/widget/authorization_form.dart';
+import '../cubit/authorization_cubit.dart';
+import '../cubit/authorization_state.dart';
+import 'authorization_form.dart';
 
 class AuthorizationWidget extends StatefulWidget {
   const AuthorizationWidget({super.key});
@@ -20,7 +20,22 @@ class _AuthorizationWidgetState extends State<AuthorizationWidget> {
   Widget build(BuildContext context) {
     return BlocListener<AuthorizationCubit, AuthorizationState>(
       listener: (context, state) {
-        if (state.status == AuthorizationStatus.complete) {
+        if(state.alertStatus == AlertStatus.visibility){
+          showBottomSheet(
+              context: context,
+              builder: (context) {
+                  Future.delayed(const Duration(seconds: 5), () {
+                    Navigator.of(context).pop(true);
+                  });
+              return
+              const ListTile(
+                minLeadingWidth: 15,
+                tileColor: Colors.red,
+                leading: Icon(Icons.error, color: Color(0xFFFFB5B5),),
+                title: Text('Wrong login details!', style: TextStyle(color: Color(0xFFFFB5B5), fontWeight: FontWeight.bold)),
+              );});
+          return;
+        }else if (state.status == AuthorizationStatus.complete) {
           BlocProvider.of<AuthenticationBloc>(context).add(LoggedIn());
           return;
         }

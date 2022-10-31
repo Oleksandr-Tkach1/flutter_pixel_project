@@ -52,26 +52,31 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<TokenResponse> authenticate(authRequest) async {
+  Future<OrdersArchive> getOrdersArchive(
+    page,
+    limit,
+  ) async {
     const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'page': page,
+      r'limit': limit,
+    };
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
-    _data.addAll(authRequest.toJson());
     final _result = await _dio
-        .fetch<Map<String, dynamic>>(_setStreamType<TokenResponse>(Options(
-      method: 'POST',
+        .fetch<Map<String, dynamic>>(_setStreamType<OrdersArchive>(Options(
+      method: 'GET',
       headers: _headers,
       extra: _extra,
     )
             .compose(
               _dio.options,
-              '/v2/auth/login',
+              '/v2/orders/list?statuses[0]=DOWNLOADED&statuses[1]=ARCHIVED&statuses[2]=READY&statuses[3]=DELIVERED',
               queryParameters: queryParameters,
               data: _data,
             )
             .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = TokenResponse.fromJson(_result.data!);
+    final value = OrdersArchive.fromJson(_result.data!);
     return value;
   }
 

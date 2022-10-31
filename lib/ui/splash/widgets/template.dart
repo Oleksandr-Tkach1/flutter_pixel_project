@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_pixel_project/ui/page/authorization/cubit/authorization_cubit.dart';
-import 'package:flutter_pixel_project/ui/page/authorization/cubit/authorization_state.dart';
+import 'package:flutter_pixel_project/ui/authorization_page/authorization/cubit/authorization_cubit.dart';
+import '../../authorization_page/authorization/cubit/authorization_state.dart';
 
 class TemplateWidget extends StatefulWidget {
 
