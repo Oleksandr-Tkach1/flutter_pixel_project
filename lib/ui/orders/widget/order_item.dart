@@ -1,9 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_pixel_project/data/model/api/get_orders/Order.dart';
-import 'package:flutter_pixel_project/ui/main/cubit/main_state.dart';
 import 'package:flutter_pixel_project/ui/order_details/order_page.dart';
 import 'package:flutter_pixel_project/utils/Colors.dart';
+import '../cubit/main_state.dart';
 
 class OrderItem extends StatefulWidget {
   final Order order;

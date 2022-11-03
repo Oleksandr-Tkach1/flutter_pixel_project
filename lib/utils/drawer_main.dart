@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_pixel_project/ui/orders/main_page.dart';
+import 'package:flutter_pixel_project/ui/orders_archive/main_orders_archive.dart';
 import 'package:flutter_pixel_project/utils/Colors.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -36,6 +38,8 @@ Widget mainDrawer(BuildContext context){
               },
             ),
             ListTile(
+              tileColor: null,
+              //const Color(0xFF4A5062)
               minLeadingWidth: 20,
               contentPadding: const EdgeInsets.only(left: 10),
               title: const Text(
@@ -44,7 +48,10 @@ Widget mainDrawer(BuildContext context){
               ),
               leading: const Icon(Icons.camera_alt, color: Colors.white, size: 28),
               onTap: () {
-                Navigator.pop(context);
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => MainPage()));
+                //Navigator.pop(context);
               },
             ),
             ListTile(
@@ -56,7 +63,10 @@ Widget mainDrawer(BuildContext context){
               leading: const Icon(Icons.storage, color: Colors.white, size: 28),
               contentPadding: const EdgeInsets.only(left: 10),
               onTap: (){
-                Navigator.pop(context);
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => MainOrdersArchive()));
+                //Navigator.pop(context);
               }
             ),
             // Padding(

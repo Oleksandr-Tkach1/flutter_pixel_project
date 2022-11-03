@@ -1,35 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_pixel_project/ui/main/cubit/main_cubit.dart';
-import 'package:flutter_pixel_project/ui/main/cubit/main_state.dart';
-import 'package:flutter_pixel_project/ui/main/widget/order_item.dart';
+import 'package:flutter_pixel_project/ui/orders_archive/cubit/orders_archive_cubit.dart';
+import 'package:flutter_pixel_project/ui/orders_archive/cubit/orders_archive_state.dart';
+import 'package:flutter_pixel_project/ui/orders_archive/widget/order_item_archive.dart';
 import 'package:flutter_pixel_project/utils/bottom_loader.dart';
 
 // ignore: must_be_immutable
-class OrdersListWidget extends StatefulWidget {
+class OrdersListArchive extends StatefulWidget {
   String? status;
 
-  OrdersListWidget({super.key, this.status});
+  OrdersListArchive({super.key, this.status});
 
   @override
-  State<OrdersListWidget> createState() => _OrdersListWidgetState();
+  State<OrdersListArchive> createState() => _OrdersListArchiveState();
 }
 
-class _OrdersListWidgetState extends State<OrdersListWidget> {
+class _OrdersListArchiveState extends State<OrdersListArchive> {
   final _scrollController = ScrollController();
-  late MainCubit? _cubit;
+  late OrdersArchiveCubit? _ordersArchiveCubit;
 
   @override
   void initState() {
     _scrollController.addListener(_onScroll);
-    _cubit = BlocProvider.of<MainCubit>(context);
-    _cubit!.fetchOrders();
+    _ordersArchiveCubit = BlocProvider.of<OrdersArchiveCubit>(context);
+    _ordersArchiveCubit!.fetchOrders();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<MainCubit, OrdersState>(
+    return BlocBuilder<OrdersArchiveCubit, OrdersArchiveState>(
        builder: (context, state) {
         if (state.status == OrdersStatus.loading) {
           return const Center(child: CircularProgressIndicator());
@@ -38,7 +38,7 @@ class _OrdersListWidgetState extends State<OrdersListWidget> {
         } else {
           return RefreshIndicator(
             onRefresh: () async {
-              BlocProvider.of<MainCubit>(context).fetchOrders();
+              BlocProvider.of<OrdersArchiveCubit>(context).fetchOrders();
             },
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -54,11 +54,10 @@ class _OrdersListWidgetState extends State<OrdersListWidget> {
                         itemBuilder: (BuildContext context, int index) {
                           return index >= state.loadedOrders.length
                               ? state.loadedOrders.length >= 10 ? const BottomLoader() : const SizedBox()
-                              : OrderItem(
+                              : OrderItemArchive(
                               order: state.loadedOrders[index],
                               index: index,
                               state: state,
-                              status: widget.status!,
                           );
                         },
                       itemCount: state.hasReachedMax
@@ -77,7 +76,7 @@ class _OrdersListWidgetState extends State<OrdersListWidget> {
   }
   void _onScroll() {
     if (_isBottom) {
-      _cubit!.fetchOrders();
+      _ordersArchiveCubit!.fetchOrders();
     }
   }
 

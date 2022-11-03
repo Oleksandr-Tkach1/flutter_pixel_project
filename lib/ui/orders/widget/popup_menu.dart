@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_pixel_project/bloc/auth/auth_bloc.dart';
 import 'package:flutter_pixel_project/bloc/auth/auth_event.dart';
-import 'package:flutter_pixel_project/ui/main/cubit/main_cubit.dart';
-import 'package:flutter_pixel_project/ui/main/cubit/main_state.dart';
+import '../cubit/main_cubit.dart';
+import '../cubit/main_state.dart';
 
 enum Menu {
   PEDNING,

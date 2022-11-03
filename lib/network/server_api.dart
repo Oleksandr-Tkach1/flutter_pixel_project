@@ -1,9 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_pixel_project/data/model/api/get_orders/OrdersResponse.dart';
-import 'package:flutter_pixel_project/data/model/api/get_orders_archive/OrdersArchive.dart';
-import 'package:flutter_pixel_project/data/model/api/response/TokenResponse.dart';
 import 'package:flutter_pixel_project/data/model/order_details/OrderDetails.dart';
-import 'package:flutter_pixel_project/data/model/request/auth_request.dart';
 import 'package:flutter_pixel_project/network/interceptor/oauth_interceptor.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 import 'package:retrofit/retrofit.dart';
@@ -38,7 +35,7 @@ abstract class RestClient {
   );
 
   @GET("/v2/orders/list?statuses[0]=DOWNLOADED&statuses[1]=ARCHIVED&statuses[2]=READY&statuses[3]=DELIVERED")
-  Future<OrdersArchive> getOrdersArchive(
+  Future<OrdersResponse> getOrdersArchive(
       @Query("page") int page,
       @Query("limit") int limit,
       );

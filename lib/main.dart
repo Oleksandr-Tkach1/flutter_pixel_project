@@ -5,7 +5,7 @@ import 'package:flutter_pixel_project/bloc/auth/auth_state.dart';
 import 'package:flutter_pixel_project/network/server_api.dart';
 import 'package:flutter_pixel_project/providers/providers.dart';
 import 'package:flutter_pixel_project/ui/authorization_page/authorization/widget/authorization_page.dart';
-import 'package:flutter_pixel_project/ui/main/main_page.dart';
+import 'package:flutter_pixel_project/ui/orders/main_page.dart';
 import 'package:flutter_pixel_project/ui/splash/splash_page.dart';
 
 import 'network/auth_server_api.dart';

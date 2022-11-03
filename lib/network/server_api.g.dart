@@ -52,7 +52,7 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<OrdersArchive> getOrdersArchive(
+  Future<OrdersResponse> getOrdersArchive(
     page,
     limit,
   ) async {
@@ -64,7 +64,7 @@ class _RestClient implements RestClient {
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio
-        .fetch<Map<String, dynamic>>(_setStreamType<OrdersArchive>(Options(
+        .fetch<Map<String, dynamic>>(_setStreamType<OrdersResponse>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
@@ -76,7 +76,7 @@ class _RestClient implements RestClient {
               data: _data,
             )
             .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = OrdersArchive.fromJson(_result.data!);
+    final value = OrdersResponse.fromJson(_result.data!);
     return value;
   }
 
