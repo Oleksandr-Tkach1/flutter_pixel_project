@@ -7,6 +7,7 @@ import 'package:flutter_pixel_project/network/server_api.dart';
 import 'package:flutter_pixel_project/ui/order_details/cubit/order_details_cubit.dart';
 import 'package:flutter_pixel_project/ui/orders/cubit/main_cubit.dart';
 import 'package:flutter_pixel_project/ui/orders_archive/cubit/orders_archive_cubit.dart';
+import 'package:flutter_pixel_project/ui/orders_dashboard/cubit/orders_dashboard_cubit.dart';
 import '../network/auth_server_api.dart';
 import '../ui/authorization_page/authorization/cubit/authorization_cubit.dart';
 
@@ -21,6 +22,7 @@ getProviders(RestClient client, AuthRestClient authClient) {
   return [
     BlocProvider(create: (context) => MainCubit(UserRepository(client))),
     BlocProvider(create: (context) => OrdersArchiveCubit(UserRepository(client))),
+    BlocProvider(create: (context) => OrdersDashboardCubit(UserRepository(client))),
     BlocProvider(create: (context) => AuthorizationCubit(AuthRepository(authClient))),
     BlocProvider(create: (context) => AuthenticationBloc(UserRepository(client))..add(AppStarted())),
     BlocProvider(create: (context) => OrderDetailsCubit(UserRepository(client))),

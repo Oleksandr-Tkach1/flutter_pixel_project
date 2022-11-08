@@ -81,6 +81,35 @@ class _RestClient implements RestClient {
   }
 
   @override
+  Future<OrdersResponse> getOrdersDashboard(
+    page,
+    limit,
+  ) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'page': page,
+      r'limit': limit,
+    };
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<OrdersResponse>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/v2/orders/list?statuses[0]=DOWNLOADED&statuses[1]=ARCHIVED&statuses[2]=READY&statuses[3]=DELIVERED&statuses[4]=IN_PROGRESS&statuses[5]=PEDNING_APPROVAL&statuses[6]=CORRECTION_NEEDED&statuses[7]=REJECTED',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = OrdersResponse.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
   Future<OrderDetails> getOrderDetails(id) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};

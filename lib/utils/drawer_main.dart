@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_pixel_project/ui/orders_dashboard/main_orders_dashboard.dart';
 import 'package:flutter_pixel_project/utils/Colors.dart';
 import 'package:flutter_svg/svg.dart';
 import '../ui/orders/main_page.dart';
@@ -86,7 +87,11 @@ Widget mainDrawer(BuildContext context) {
     return Navigator.pop(context);
   }else
     if(updateCountList == 0){
-    return;
+    return Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) =>
+                MainOrdersDashboard()));
   }else if(updateCountList == 1){
     return Navigator.push(
         context,

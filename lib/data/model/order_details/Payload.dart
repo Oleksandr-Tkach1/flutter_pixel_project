@@ -1,8 +1,9 @@
+import 'package:equatable/equatable.dart';
 import 'DesignerDetails.dart';
 import 'Images.dart';
 import 'QaDetails.dart';
 
-class Payload {
+class Payload extends Equatable {
   Payload({
       this.id, 
       this.b2c, 
@@ -34,6 +35,9 @@ class Payload {
       this.imageBaseUrl, 
       this.updatedAt,
   });
+
+  @override
+  List<Object?> get props => [images];
 
   Payload.fromJson(dynamic json) {
     id = json['_id'];

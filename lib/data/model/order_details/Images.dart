@@ -1,6 +1,8 @@
-enum OrderStatus { accept, reject, none }
+import 'package:equatable/equatable.dart';
 
-class Images {
+enum OrderStatus { accept, reject, sendToCustomer, none }
+
+class Images extends Equatable {
   Images({
       this.hasThumb, 
       this.isAlreadyPrepaid, 
@@ -16,6 +18,9 @@ class Images {
       this.userImage,
       this.aiCompositedImage, 
       this.aiImage,});
+
+  @override
+  List<Object?> get props => [status, visibilityComment];
 
   Images.fromJson(dynamic json) {
     hasThumb = json['hasThumb'];

@@ -12,4 +12,6 @@ abstract class UserDataSource {
   Future<OrdersResponse> getOrdersArchive(int offset);
 
   Future<OrderDetails> getOrderDetails(String id);
+
+  Future<OrdersResponse> getOrdersDashboard(int offset);
 }

@@ -40,6 +40,12 @@ abstract class RestClient {
       @Query("limit") int limit,
       );
 
+  @GET("/v2/orders/list?statuses[0]=DOWNLOADED&statuses[1]=ARCHIVED&statuses[2]=READY&statuses[3]=DELIVERED&statuses[4]=IN_PROGRESS&statuses[5]=PEDNING_APPROVAL&statuses[6]=CORRECTION_NEEDED&statuses[7]=REJECTED")
+  Future<OrdersResponse> getOrdersDashboard(
+      @Query("page") int page,
+      @Query("limit") int limit,
+      );
+
   @PUT("/v2/orders/{id}/qa")
   Future<OrderDetails> getOrderDetails(@Path('id') String id);
 }

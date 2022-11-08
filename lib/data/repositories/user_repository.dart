@@ -43,4 +43,9 @@ class UserRepository extends UserDataSource {
   Future<OrderDetails> getOrderDetails(String id) {
     return client.getOrderDetails(id);
   }
+
+  @override
+  Future<OrdersResponse> getOrdersDashboard(int offset) async {
+    return await client.getOrdersDashboard(1, offset);
+  }
 }

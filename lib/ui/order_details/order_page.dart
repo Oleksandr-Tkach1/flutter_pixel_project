@@ -44,23 +44,26 @@ class _OrderPageState extends State<OrderPage> {
         elevation: 0,
         title: SvgPicture.asset('assets/gad_logo.svg', width: 110),
       ),
-      body: const OrderListImage(),
-      floatingActionButton:
-      //buildFloatingActionButton(),
-      FloatingActionButton(
-        backgroundColor: AppColors.actionButtonColor,
-          child: const Icon(Icons.arrow_downward, color: Colors.white,),
-          onPressed: () {
-            setState(() {
-              //_messages.insert(0, Text("message ${_messages.length}"));
-            });
-            _controller.animateTo(
-              0.0,
-              curve: Curves.easeOut,
-              duration: const Duration(milliseconds: 300),
-            );
-          }
-      ),
+      body: BlocBuilder<OrderDetailsCubit, OrderDetailsState>(
+        builder: (context, state) {
+          return OrderListImage(state: state);
+        }),
+      // floatingActionButton:
+      // //buildFloatingActionButton(),
+      // FloatingActionButton(
+      //   backgroundColor: AppColors.actionButtonColor,
+      //     child: const Icon(Icons.arrow_downward, color: Colors.white,),
+      //     onPressed: () {
+      //       setState(() {
+      //         //_messages.insert(0, Text("message ${_messages.length}"));
+      //       });
+      //       _controller.animateTo(
+      //         0.0,
+      //         curve: Curves.easeOut,
+      //         duration: const Duration(milliseconds: 300),
+      //       );
+      //     }
+      // ),
     );
   }
 

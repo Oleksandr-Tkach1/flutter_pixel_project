@@ -1,4 +1,3 @@
-
 import 'package:flutter_pixel_project/data/model/api/response/QaDetails.dart';
 
 class Order {
