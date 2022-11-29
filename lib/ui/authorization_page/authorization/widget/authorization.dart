@@ -3,39 +3,26 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_pixel_project/bloc/auth/auth_bloc.dart';
 import 'package:flutter_pixel_project/bloc/auth/auth_event.dart';
 import 'package:flutter_pixel_project/ui/app_alert.dart';
+import '../../../../utils/bottom_sheet_dialog.dart';
 import '../cubit/authorization_cubit.dart';
 import '../cubit/authorization_state.dart';
 import 'authorization_form.dart';
 
 class AuthorizationWidget extends StatefulWidget {
   const AuthorizationWidget({super.key});
-
   @override
   _AuthorizationWidgetState createState() => _AuthorizationWidgetState();
 }
 
 class _AuthorizationWidgetState extends State<AuthorizationWidget> {
-
   @override
   Widget build(BuildContext context) {
     return BlocListener<AuthorizationCubit, AuthorizationState>(
       listener: (context, state) {
-        if(state.alertStatus == AlertStatus.visibility){
-          showBottomSheet(
-              context: context,
-              builder: (context) {
-                  Future.delayed(const Duration(seconds: 5), () {
-                    Navigator.of(context).pop(true);
-                  });
-              return
-              const ListTile(
-                minLeadingWidth: 15,
-                tileColor: Colors.red,
-                leading: Icon(Icons.error, color: Color(0xFFFFB5B5),),
-                title: Text('Wrong login details!', style: TextStyle(color: Color(0xFFFFB5B5), fontWeight: FontWeight.bold)),
-              );});
+        if (state.alertStatus == AlertStatus.visibility) {
+          bottomSheetDialog(context, state);
           return;
-        }else if (state.status == AuthorizationStatus.complete) {
+        } else if (state.status == AuthorizationStatus.complete) {
           BlocProvider.of<AuthenticationBloc>(context).add(LoggedIn());
           return;
         }
@@ -49,7 +36,6 @@ class _AuthorizationWidgetState extends State<AuthorizationWidget> {
       child: BlocBuilder<AuthorizationCubit, AuthorizationState>(
         builder: (context, state) {
           return Column(
-            // Vertically center the widget inside the column
             mainAxisAlignment: MainAxisAlignment.center,
             children: [_buildContent(context, state)],
           );
@@ -70,7 +56,8 @@ class _AuthorizationWidgetState extends State<AuthorizationWidget> {
 class Loading extends StatelessWidget {
   const Loading({super.key});
   @override
-  Widget build(BuildContext context) => const Center(
-    child: CircularProgressIndicator(),
-  );
+  Widget build(BuildContext context) =>
+      const Center(
+        child: CircularProgressIndicator(),
+      );
 }

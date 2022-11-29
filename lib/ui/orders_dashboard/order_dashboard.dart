@@ -5,20 +5,19 @@ import 'package:flutter_pixel_project/ui/orders_dashboard/cubit/orders_dashboard
 import 'package:flutter_pixel_project/ui/orders_dashboard/widget/orders_list_dashboard.dart';
 import 'package:flutter_pixel_project/ui/orders_dashboard/widget/popup_menu.dart';
 import 'package:flutter_pixel_project/utils/Colors.dart';
-import 'package:flutter_pixel_project/utils/drawer_main.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 // ignore: must_be_immutable
-class MainOrdersDashboard extends StatefulWidget {
+class OrderDashboard extends StatefulWidget {
   String? currentStatus;
 
-  MainOrdersDashboard({super.key, this.currentStatus,});
+  OrderDashboard({super.key, this.currentStatus,});
 
   @override
-  MainOrdersDashboardState createState() => MainOrdersDashboardState();
+  OrderDashboardState createState() => OrderDashboardState();
 }
 
-class MainOrdersDashboardState extends State<MainOrdersDashboard> {
+class OrderDashboardState extends State<OrderDashboard> {
   late OrdersDashboardCubit ordersDashboardCubit;
 
   @override
@@ -50,7 +49,6 @@ class MainOrdersDashboardState extends State<MainOrdersDashboard> {
             ],
           ),
           body: OrdersListDashboard(status: widget.currentStatus),
-          drawer: mainDrawer(context),
         );
       }),
     );

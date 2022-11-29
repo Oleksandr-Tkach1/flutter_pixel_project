@@ -12,7 +12,6 @@ abstract class AuthenticationEvent extends Equatable {
 class AppStarted extends AuthenticationEvent {
   @override
   List<Object> get props => [];
-
   @override
   String toString() => 'AppStarted';
 }
@@ -20,7 +19,6 @@ class AppStarted extends AuthenticationEvent {
 class AppLoaded extends AuthenticationEvent {
   @override
   List<Object> get props => [];
-
   @override
   String toString() => 'AppLoaded';
 }
@@ -28,7 +26,6 @@ class AppLoaded extends AuthenticationEvent {
 class LoggedOut extends AuthenticationEvent {
   @override
   List<Object> get props => [];
-
   @override
   String toString() => 'LoggedOut';
 }
@@ -36,7 +33,6 @@ class LoggedOut extends AuthenticationEvent {
 class LoggedIn extends AuthenticationEvent {
   @override
   List<Object> get props => [];
-
   @override
   String toString() => 'LoggedIn';
 }

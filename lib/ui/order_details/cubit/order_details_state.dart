@@ -34,9 +34,9 @@ class OrderDetailsState extends Equatable {
   @override
   List<Object?> get props =>
       [
+        orderDetails,
         status,
         errorMessage,
-        orderDetails,
-        images,
+        images.toString(),
       ];
 }

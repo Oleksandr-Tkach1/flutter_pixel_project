@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_pixel_project/ui/orders_dashboard/main_orders_dashboard.dart';
+import 'package:flutter_pixel_project/ui/main/cubit/main_state.dart';
+import 'package:flutter_pixel_project/ui/orders_dashboard/order_dashboard.dart';
 import 'package:flutter_pixel_project/utils/Colors.dart';
 import 'package:flutter_svg/svg.dart';
-import '../ui/orders/main_page.dart';
-import '../ui/orders_archive/main_orders_archive.dart';
+import '../../orders/order_page.dart';
+import '../../orders_archive/order_archive.dart';
 
 List<String> _titleList = [
   "Dashboard",
@@ -15,12 +16,10 @@ List<Icon> _leadingList = [
   const Icon(Icons.camera_alt, color: Colors.white, size: 28),
   const Icon(Icons.storage, color: Colors.white, size: 28),
 ];
-
 int updateCountList = 1;
-
 int currentItem = 1;
 
-Widget mainDrawer(BuildContext context) {
+Widget mainDrawer([BuildContext? context, MainState? state]) {
   return Drawer(
     backgroundColor: AppColors.backgroundColor,
     child: Column(
@@ -63,7 +62,6 @@ Widget mainDrawer(BuildContext context) {
                   updateCountList = index;
                   _sendNavigator(context, index);
                   currentItem = updateCountList;
-                  // Navigator.pop(context);
                 },
               );
             },
@@ -74,35 +72,25 @@ Widget mainDrawer(BuildContext context) {
   );
 }
 
- _updateSelectedItem(int index) {
-   if(index == updateCountList){
-     return const Color(0xFF4A5062);
-   }else{
-     return null;
-   }
+_updateSelectedItem(int index) {
+  if (index == updateCountList) {
+    return const Color(0xFF4A5062);
+  } else {
+    return null;
+  }
 }
 
- _sendNavigator(BuildContext context, int index){
-  if(currentItem == updateCountList){
+_sendNavigator(BuildContext context, int index) {
+  if (currentItem == updateCountList) {
     return Navigator.pop(context);
-  }else
-    if(updateCountList == 0){
+  } else if (updateCountList == 0) {
     return Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) =>
-                MainOrdersDashboard()));
-  }else if(updateCountList == 1){
+        context, MaterialPageRoute(builder: (context) => OrderDashboard()));
+  } else if (updateCountList == 1) {
     return Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) =>
-            MainPage()));
-  }else if(updateCountList == 2){
+        context, MaterialPageRoute(builder: (context) => OrderPage()));
+  } else if (updateCountList == 2) {
     return Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) =>
-            MainOrdersArchive()));
+        context, MaterialPageRoute(builder: (context) => OrderArchive()));
   }
- }
+}

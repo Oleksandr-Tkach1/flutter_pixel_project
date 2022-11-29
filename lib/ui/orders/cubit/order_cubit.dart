@@ -1,14 +1,14 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter_pixel_project/data/model/api/get_orders/Order.dart';
 import 'package:flutter_pixel_project/data/repositories/user_repository.dart';
-import 'main_state.dart';
+import 'order_state.dart';
 
-class MainCubit extends Cubit<OrdersState> {
+class OrderCubit extends Cubit<OrderState> {
   final UserRepository _userRepository;
   int page = 10;
   bool fetching = false;
 
-  MainCubit(this._userRepository) : super(const OrdersState());
+  OrderCubit(this._userRepository) : super(const OrderState());
 
   setCurrentStatus(String status) {
     emit(state.copyWith(

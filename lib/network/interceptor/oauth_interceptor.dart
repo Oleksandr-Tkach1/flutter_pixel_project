@@ -24,7 +24,7 @@ class OauthInterceptor extends InterceptorsWrapper {
 
     @override
     Future onError(DioError err, ErrorInterceptorHandler handler) async {
-        if(err.response?.statusCode == 401){
+        if(err.response?.statusCode == 401 && err.response == null){
         BlocProvider.of<AuthenticationBloc>(MainAppState.getContext()).add(LoggedOut());
       }
       return onError(err, handler);

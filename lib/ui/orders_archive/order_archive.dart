@@ -5,20 +5,19 @@ import 'package:flutter_pixel_project/ui/orders_archive/cubit/orders_archive_sta
 import 'package:flutter_pixel_project/ui/orders_archive/widget/orders_list_archive.dart';
 import 'package:flutter_pixel_project/ui/orders_archive/widget/popup_menu.dart';
 import 'package:flutter_pixel_project/utils/Colors.dart';
-import 'package:flutter_pixel_project/utils/drawer_main.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 // ignore: must_be_immutable
-class MainOrdersArchive extends StatefulWidget {
+class OrderArchive extends StatefulWidget {
   String? currentStatus;
 
-  MainOrdersArchive({super.key, this.currentStatus,});
+  OrderArchive({super.key, this.currentStatus,});
 
   @override
-  MainOrdersArchiveState createState() => MainOrdersArchiveState();
+  OrderArchiveState createState() => OrderArchiveState();
 }
 
-class MainOrdersArchiveState extends State<MainOrdersArchive> {
+class OrderArchiveState extends State<OrderArchive> {
   late OrdersArchiveCubit ordersArchiveCubit;
 
   @override
@@ -50,7 +49,6 @@ class MainOrdersArchiveState extends State<MainOrdersArchive> {
             ],
           ),
           body: OrdersListArchive(status: widget.currentStatus),
-          drawer: mainDrawer(context),
         );
       }),
     );

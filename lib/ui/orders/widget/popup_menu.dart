@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_pixel_project/bloc/auth/auth_bloc.dart';
 import 'package:flutter_pixel_project/bloc/auth/auth_event.dart';
-import '../cubit/main_cubit.dart';
-import '../cubit/main_state.dart';
+import '../cubit/order_cubit.dart';
+import '../cubit/order_state.dart';
 
 enum Menu {
   PEDNING,
@@ -12,7 +12,7 @@ enum Menu {
   Logout,
 }
 
-Widget popupMenu(BuildContext context, OrdersState state) {
+Widget popupMenu(BuildContext context, OrderState state) {
   return PopupMenuButton<Menu>(
     itemBuilder: (BuildContext context) => <PopupMenuEntry<Menu>>[
       PopupMenuItem<Menu>(
@@ -48,6 +48,6 @@ Widget popupMenu(BuildContext context, OrdersState state) {
   );
 }
 
-void setOrderStatus(String status, BuildContext context, OrdersState state){
-  BlocProvider.of<MainCubit>(context).setCurrentStatus(status);
+void setOrderStatus(String status, BuildContext context, OrderState state){
+  BlocProvider.of<OrderCubit>(context).setCurrentStatus(status);
 }

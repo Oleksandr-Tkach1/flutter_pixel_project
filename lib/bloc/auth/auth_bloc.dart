@@ -26,11 +26,8 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
       clearAppData(MainAppState.getContext());
       emit(state.copyWith(
           status: AuthenticationStatus.unauthenticated,
-          deepLinkConfirmCode: '',
-          deepLinkEmail: '',
           token: '',
-          ),
-      );
+          ));
     });
     on<LoggedIn>((event, emit) async{
       emit(state.copyWith(

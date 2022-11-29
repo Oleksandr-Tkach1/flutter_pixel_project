@@ -17,7 +17,8 @@ class _OrderListImageState extends State<OrderListImage> {
   final _commentTextController = TextEditingController();
 
   ///Test
-  String baseUrlImage = 'https://dailystorm.ru/media/images/2020/09/29/843a1336-4b8d-412c-a97d-d1369d440730.jpg';
+  String baseUrlImage =
+      'https://dailystorm.ru/media/images/2020/09/29/843a1336-4b8d-412c-a97d-d1369d440730.jpg';
 
   @override
   Widget build(BuildContext context) {
@@ -97,7 +98,6 @@ class _OrderListImageState extends State<OrderListImage> {
       return RadioButton(
         state: state,
         index: index,
-        image: state.images![index],
         controller: _commentTextController,
       );
     } else {

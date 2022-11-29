@@ -11,6 +11,7 @@ class AuthorizationState extends Equatable {
   final String confirmCode;
   final int statusCode;
   final AlertStatus alertStatus;
+  final String statusError;
 
   const AuthorizationState({
     this.status = AuthorizationStatus.initial,
@@ -19,6 +20,7 @@ class AuthorizationState extends Equatable {
     this.confirmCode = '',
     this.statusCode = 0,
     this.alertStatus = AlertStatus.none,
+    this.statusError = '',
   });
 
   AuthorizationState copyWith({
@@ -26,9 +28,9 @@ class AuthorizationState extends Equatable {
     String? errorMessage,
     String? email,
     String? confirmCode,
-    bool? emailIsValid,
     int? statusCode,
     AlertStatus? alertStatus,
+    String? statusError,
   }) {
     return AuthorizationState(
       status: status ?? this.status,
@@ -37,10 +39,11 @@ class AuthorizationState extends Equatable {
       confirmCode: confirmCode ?? this.confirmCode,
       statusCode: statusCode ?? this.statusCode,
       alertStatus: alertStatus ?? this.alertStatus,
+      statusError: statusError ?? this.statusError,
     );
   }
 
   @override
   List<Object> get props =>
-      [email, status, errorMessage, confirmCode, statusCode, alertStatus];
+      [status, errorMessage, email, confirmCode, statusCode, alertStatus, statusError];
 }

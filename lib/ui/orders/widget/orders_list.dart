@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_pixel_project/utils/bottom_loader.dart';
-import '../cubit/main_cubit.dart';
-import '../cubit/main_state.dart';
+import '../cubit/order_cubit.dart';
+import '../cubit/order_state.dart';
 import 'order_item.dart';
 
 // ignore: must_be_immutable
@@ -17,19 +17,19 @@ class OrdersListWidget extends StatefulWidget {
 
 class _OrdersListWidgetState extends State<OrdersListWidget> {
   final _scrollController = ScrollController();
-  late MainCubit? _cubit;
+  late OrderCubit? _cubit;
 
   @override
   void initState() {
     _scrollController.addListener(_onScroll);
-    _cubit = BlocProvider.of<MainCubit>(context);
+    _cubit = BlocProvider.of<OrderCubit>(context);
     _cubit!.fetchOrders();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<MainCubit, OrdersState>(
+    return BlocBuilder<OrderCubit, OrderState>(
        builder: (context, state) {
         if (state.status == OrdersStatus.loading) {
           return const Center(child: CircularProgressIndicator());
@@ -38,7 +38,7 @@ class _OrdersListWidgetState extends State<OrdersListWidget> {
         } else {
           return RefreshIndicator(
             onRefresh: () async {
-              BlocProvider.of<MainCubit>(context).fetchOrders();
+              BlocProvider.of<OrderCubit>(context).fetchOrders();
             },
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
