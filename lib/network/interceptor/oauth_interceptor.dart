@@ -1,3 +1,4 @@
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter_pixel_project/bloc/auth/auth_bloc.dart';
 import 'package:flutter_pixel_project/bloc/auth/auth_event.dart';
 import 'package:flutter_pixel_project/data/app_data.dart';
@@ -28,5 +29,10 @@ class OauthInterceptor extends InterceptorsWrapper {
         BlocProvider.of<AuthenticationBloc>(MainAppState.getContext()).add(LoggedOut());
       }
       return onError(err, handler);
+    }
+
+    checkInternetConnectionIn () async{
+      final result = await Connectivity().checkConnectivity();
+      BlocProvider.of<AuthenticationBloc>(MainAppState.getContext()).checkInternetConnection(result);
     }
   }

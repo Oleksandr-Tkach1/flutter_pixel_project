@@ -1,3 +1,4 @@
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_pixel_project/bloc/auth/auth_bloc.dart';
@@ -7,7 +8,8 @@ import 'package:flutter_pixel_project/providers/providers.dart';
 import 'package:flutter_pixel_project/ui/authorization_page/authorization/widget/authorization_page.dart';
 import 'package:flutter_pixel_project/ui/orders/order_page.dart';
 import 'package:flutter_pixel_project/ui/splash/splash_page.dart';
-
+import 'package:flutter_pixel_project/utils/check_internet_connection/dialog_internet_connection.dart';
+import 'package:flutter_pixel_project/utils/dialog.dart';
 import 'network/auth_server_api.dart';
 
 void main() {
@@ -27,6 +29,7 @@ class MainApp extends StatefulWidget {
 
 class MainAppState extends State<MainApp> {
   static BuildContext? _context;
+
   static BuildContext getContext() {
     return _context!;
   }
@@ -36,18 +39,35 @@ class MainAppState extends State<MainApp> {
     _context = context;
   }
 
+  ///TODO
+  // checkInternetConnection(AuthenticationState state) async{
+  //   final result = await Connectivity().checkConnectivity();
+  //   //BlocProvider.of<AuthenticationBloc>(context).checkInternetConnection(context, result);
+  //   if(state.internetConnection == InternetConnection.notConnect){
+  //     const errorMessage = 'No internet connection';
+  //     return bottomSheetDialog(context, false, errorMessage);
+  //   }else{
+  //     return;
+  //   }
+  // }
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<AuthenticationBloc, AuthenticationState>(
         builder: (context, state) {
-        return MaterialApp(
-          title: 'Flutter Demo',
-          theme: ThemeData(
-            primarySwatch: Colors.grey,
-              unselectedWidgetColor:Colors.white
-          ),
-          home: navigateToHomeWidget(state),
-        );
+          return MaterialApp(
+              title: 'Pixel',
+              theme: ThemeData(
+                primarySwatch: Colors.grey,
+                  unselectedWidgetColor:Colors.white
+              ),
+              home: Stack(
+                children: [
+                  navigateToHomeWidget(state),
+                  const DialogInternetConnection(),
+                ],
+              ),
+            );
     });
   }
 

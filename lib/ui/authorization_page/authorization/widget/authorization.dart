@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_pixel_project/bloc/auth/auth_bloc.dart';
 import 'package:flutter_pixel_project/bloc/auth/auth_event.dart';
 import 'package:flutter_pixel_project/ui/app_alert.dart';
-import '../../../../utils/bottom_sheet_dialog.dart';
+import '../../../../utils/dialog.dart';
 import '../cubit/authorization_cubit.dart';
 import '../cubit/authorization_state.dart';
 import 'authorization_form.dart';
@@ -20,7 +20,7 @@ class _AuthorizationWidgetState extends State<AuthorizationWidget> {
     return BlocListener<AuthorizationCubit, AuthorizationState>(
       listener: (context, state) {
         if (state.alertStatus == AlertStatus.visibility) {
-          bottomSheetDialog(context, state);
+          bottomSheetDialog(context, true, state.statusError);
           return;
         } else if (state.status == AuthorizationStatus.complete) {
           BlocProvider.of<AuthenticationBloc>(context).add(LoggedIn());

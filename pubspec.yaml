@@ -45,6 +45,7 @@ dependencies:
   retrofit: ^3.0.1+1
   json_serializable: ^6.1.5
   pretty_dio_logger: ^1.1.1
+  connectivity_plus: ^3.0.2
 
   # code gen
   build_runner: ^2.2.0

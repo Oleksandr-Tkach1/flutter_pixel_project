@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import '../ui/authorization_page/authorization/cubit/authorization_state.dart';
 
-bottomSheetDialog(BuildContext context, AuthorizationState state) {
+bottomSheetDialog(BuildContext context, bool removeDialogue, String errorStatus) {
   return showBottomSheet(
       context: context,
       builder: (context) {
         Future.delayed(const Duration(seconds: 5), () {
-          Navigator.of(context).pop(true);
+          Navigator.of(context).pop(removeDialogue);
         });
         return ListTile(
           minLeadingWidth: 15,
@@ -15,7 +14,7 @@ bottomSheetDialog(BuildContext context, AuthorizationState state) {
             Icons.error,
             color: Color(0xFFFFB5B5),
           ),
-          title: Text(state.statusError,
+          title: Text(errorStatus,
               style: const TextStyle(color: Color(0xFFFFB5B5), fontWeight: FontWeight.bold)),
         );
       });

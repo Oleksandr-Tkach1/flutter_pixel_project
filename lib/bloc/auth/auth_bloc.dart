@@ -1,11 +1,12 @@
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter_pixel_project/bloc/auth/auth_event.dart';
 import 'package:flutter_pixel_project/bloc/auth/auth_state.dart';
 import 'package:flutter_pixel_project/data/repositories/user_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_pixel_project/main.dart';
-
 import '../../ui/authorization_page/authorization/cubit/authorization_cubit.dart';
+import '../../utils/dialog.dart';
 
 class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> {
   final UserRepository _userRepository;
@@ -46,5 +47,21 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
   void logout(BuildContext context) {
     Navigator.of(context).popUntil((route) => route.isFirst);
     BlocProvider.of<AuthenticationBloc>(context).add(LoggedOut());
+  }
+
+  checkInternetConnection(ConnectivityResult result){
+    if(result == ConnectivityResult.none){
+      emit(state.copyWith(
+        internetConnection: InternetConnection.notConnect
+      ));
+    }else{
+      emit(state.copyWith(
+          internetConnection: InternetConnection.connect
+      ));
+    }
+  //   final hasInternet = result != ConnectivityResult.none;
+  //   final message = hasInternet ? 'You have again ${result.toString()}' : 'You have not internet';
+  //   //final color = hasInternet ? Colors.green : Colors.red;
+  //   bottomSheetDialog(context, false, message);
   }
 }
