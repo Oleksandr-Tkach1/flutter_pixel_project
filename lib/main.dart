@@ -1,4 +1,3 @@
-import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_pixel_project/bloc/auth/auth_bloc.dart';
@@ -9,7 +8,6 @@ import 'package:flutter_pixel_project/ui/authorization_page/authorization/widget
 import 'package:flutter_pixel_project/ui/orders/order_page.dart';
 import 'package:flutter_pixel_project/ui/splash/splash_page.dart';
 import 'package:flutter_pixel_project/utils/check_internet_connection/dialog_internet_connection.dart';
-import 'package:flutter_pixel_project/utils/dialog.dart';
 import 'network/auth_server_api.dart';
 
 void main() {
@@ -38,18 +36,6 @@ class MainAppState extends State<MainApp> {
   void initState() {
     _context = context;
   }
-
-  ///TODO
-  // checkInternetConnection(AuthenticationState state) async{
-  //   final result = await Connectivity().checkConnectivity();
-  //   //BlocProvider.of<AuthenticationBloc>(context).checkInternetConnection(context, result);
-  //   if(state.internetConnection == InternetConnection.notConnect){
-  //     const errorMessage = 'No internet connection';
-  //     return bottomSheetDialog(context, false, errorMessage);
-  //   }else{
-  //     return;
-  //   }
-  // }
 
   @override
   Widget build(BuildContext context) {

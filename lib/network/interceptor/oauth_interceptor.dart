@@ -30,9 +30,4 @@ class OauthInterceptor extends InterceptorsWrapper {
       }
       return onError(err, handler);
     }
-
-    checkInternetConnectionIn () async{
-      final result = await Connectivity().checkConnectivity();
-      BlocProvider.of<AuthenticationBloc>(MainAppState.getContext()).checkInternetConnection(result);
-    }
   }

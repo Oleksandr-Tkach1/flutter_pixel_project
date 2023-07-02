@@ -9,43 +9,36 @@ class DialogInternetConnection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ValueListenableBuilder<bool>(
-      valueListenable: ObserveDialog.appLoader.loaderShowingNotifier,
-      builder: (context, value, child) {
-        if (value) {
-          return showDialog(context);
-        } else {
-          return Container();
-        }
-      },
-    );
+    return BlocBuilder<CheckInternetConnectionBloc, CheckInternetConnectionState>(
+        builder: (context, state) {
+          return ValueListenableBuilder<bool>(
+            valueListenable: state.loaderShowingNotifier = ValueNotifier(true),
+            builder: (context, value, child) {
+                return FutureBuilder(
+                    future: showDialog(context, state),
+                    builder: (BuildContext context, AsyncSnapshot snapshot){
+                      if(snapshot.hasData){
+                        return snapshot.data;
+                      }
+                      return Container();
+                    }
+                );
+            },
+          );
+        });
   }
 
-  showDialog(BuildContext context) {
-    return BlocBuilder<CheckInternetConnectionBloc,
-        CheckInternetConnectionState>(
-      builder: (context, state) {
-        if (state is InternetDisconnected) {
-          return const DialogDetails(color: Colors.red, internetStatus: 'No Internet connection!');
-        } else if (state is InternetConnected) {
-          return const DialogDetails(color: Colors.green, internetStatus: 'Internet connected!');
-        } else {
-          return const SizedBox.shrink();
-        }
-      },
-    );
-  }
-}
-
-class ObserveDialog {
-  static final ObserveDialog appLoader = ObserveDialog();
-  ValueNotifier<bool> loaderShowingNotifier = ValueNotifier(true);
-
-  void showDialog() {
-    loaderShowingNotifier.value = true;
-  }
-
-  void removeDialog() {
-    loaderShowingNotifier.value = false;
+  showDialog(BuildContext context, CheckInternetConnectionState state) async{
+    if(state.status == InternetConnectionStatus.initial){
+      return const SizedBox.shrink();
+    } else if (state.status == InternetConnectionStatus.internetDisconnected) {
+      return const DialogDetails(
+          color: Colors.red, internetStatus: 'No Internet connection!', removeTime: 0, removeDialogue: false);
+    } else if (state.status == InternetConnectionStatus.internetConnected) {
+        return const DialogDetails(
+            color: Colors.green, internetStatus: 'Internet connected!', removeTime: 3, removeDialogue: true);
+    } else {
+      return const SizedBox.shrink();
+    }
   }
 }

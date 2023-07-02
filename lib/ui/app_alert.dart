@@ -16,8 +16,7 @@ class AppAlertDialog extends StatefulWidget {
   State<StatefulWidget> createState() => AppAlertDialogState();
 }
 
-class AppAlertDialogState extends State<AppAlertDialog>
-    with SingleTickerProviderStateMixin {
+class AppAlertDialogState extends State<AppAlertDialog> with SingleTickerProviderStateMixin {
   AnimationController? controller;
   Animation<double>? scaleAnimation;
 
@@ -25,7 +24,7 @@ class AppAlertDialogState extends State<AppAlertDialog>
   void initState() {
     super.initState();
 
-    controller = AnimationController(vsync: this, duration: Duration(milliseconds: 400));
+    controller = AnimationController(vsync: this, duration: const Duration(milliseconds: 400));
     scaleAnimation = CurvedAnimation(parent: controller!, curve: Curves.easeInOut);
     controller!.addListener(() {
       setState(() {});

@@ -1,7 +1,30 @@
-abstract class CheckInternetConnectionState {}
+import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 
-class InternetConnectionInitial extends CheckInternetConnectionState {}
+enum InternetConnectionStatus{ initial, internetConnected, internetDisconnected }
 
-class InternetConnected extends CheckInternetConnectionState {}
+class CheckInternetConnectionState extends Equatable {
+  final InternetConnectionStatus status;
+  final bool internetConnection;
+  late ValueNotifier<bool>? loaderShowingNotifier;
 
-class InternetDisconnected extends CheckInternetConnectionState {}
+  CheckInternetConnectionState({
+    this.status = InternetConnectionStatus.initial,
+    this.internetConnection = false,
+    this.loaderShowingNotifier,
+});
+
+  CheckInternetConnectionState copyWith({
+    InternetConnectionStatus? status,
+    bool? internetConnection,
+    ValueNotifier<bool>? loaderShowingNotifier,
+  }) {
+    return CheckInternetConnectionState(
+      status: status ?? this.status,
+      internetConnection: internetConnection ?? this.internetConnection,
+      loaderShowingNotifier: loaderShowingNotifier ?? this.loaderShowingNotifier,
+    );
+  }
+  @override
+  List<Object?> get props => [status, internetConnection, loaderShowingNotifier];
+}

@@ -11,9 +11,10 @@ class OrderPage extends StatefulWidget {
   OrderDetailsState? state;
 
   OrderPage(
-      {Key? key,
+      {
+        Key? key,
         this.state,
-      required this.orderId,
+        required this.orderId,
       }) : super(key: key);
 
   @override
@@ -48,22 +49,6 @@ class _OrderPageState extends State<OrderPage> {
         builder: (context, state) {
           return OrderListImage(state: state);
         }),
-      // floatingActionButton:
-      // //buildFloatingActionButton(),
-      // FloatingActionButton(
-      //   backgroundColor: AppColors.actionButtonColor,
-      //     child: const Icon(Icons.arrow_downward, color: Colors.white,),
-      //     onPressed: () {
-      //       setState(() {
-      //         //_messages.insert(0, Text("message ${_messages.length}"));
-      //       });
-      //       _controller.animateTo(
-      //         0.0,
-      //         curve: Curves.easeOut,
-      //         duration: const Duration(milliseconds: 300),
-      //       );
-      //     }
-      // ),
     );
   }
 
